@@ -26,9 +26,9 @@ using System.IO;
 using System.Xml;
 using NUnit.Common;
 using NUnit.Engine;
-using NUnit.ConsoleRunner.Utilities;
+using NUnit.Hosted.Utilities;
 
-namespace NUnit.ConsoleRunner
+namespace NUnit.Hosted
 {
     /// <summary>
     /// TestEventHandler processes events from the running

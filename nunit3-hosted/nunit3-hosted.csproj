@@ -7,7 +7,7 @@
     <ProjectGuid>{D4E49DF5-6F89-4DC3-A645-EF0EDED312B4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>nunit3_hosted</RootNamespace>
+    <RootNamespace>NUnit.Hosted</RootNamespace>
     <AssemblyName>nunit3-hosted</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -59,14 +59,13 @@
     <Compile Include="ResultSummary.cs" />
     <Compile Include="HostedOptions.cs" />
     <Compile Include="ResultReporter.cs" />
-    <Compile Include="Run.cs" />
     <Compile Include="Runner.cs" />
-    <Compile Include="SaveConsoleOutput.cs" />
-    <Compile Include="TeamCity\TeamCityServiceMessagePublisher.cs" />
+    <Compile Include="Utilities\SaveConsoleOutput.cs" />
+    <Compile Include="Utilities\TeamCityServiceMessagePublisher.cs" />
     <Compile Include="TestEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestResult.cs" />
-    <Compile Include="XmlHelper.cs" />
+    <Compile Include="Common\XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

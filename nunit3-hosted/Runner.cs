@@ -25,11 +25,10 @@
 using System;
 using NUnit.Engine;
 using System.IO;
-using NUnit.ConsoleRunner.Utilities;
+using NUnit.Hosted.Utilities;
 using System.Xml;
-using NUnit.ConsoleRunner;
 
-namespace NUnit.HostedRunner
+namespace NUnit.Hosted
 {
     public class Runner
     {
@@ -136,6 +135,21 @@ namespace NUnit.HostedRunner
             TestPackage package = new TestPackage(options.InputFiles);
             return package;
         }
+
+        public static TestResult Run(HostedOptions options)
+        {
+            using (ITestEngine engine = TestEngineActivator.CreateInstance())
+            {
+                if (options.WorkDirectory != null)
+                    engine.WorkDirectory = options.WorkDirectory;
+
+                if (options.InternalTraceLevel != null)
+                    engine.InternalTraceLevel = (InternalTraceLevel)Enum.Parse(typeof(InternalTraceLevel), options.InternalTraceLevel);
+
+                return new Runner(engine, options).Execute();
+            }
+        }
+
     }
 }
 

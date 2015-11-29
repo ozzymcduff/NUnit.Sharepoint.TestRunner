@@ -24,7 +24,7 @@
 using System;
 using System.IO;
 
-namespace NUnit.ConsoleRunner.Utilities
+namespace NUnit.Hosted.Utilities
 {
     /// <summary>
     /// Saves Console.Out and Console.Error and restores them when the object

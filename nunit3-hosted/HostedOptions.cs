@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NUnit.ConsoleRunner
+namespace NUnit.Hosted
 {
     public class HostedOptions
     {

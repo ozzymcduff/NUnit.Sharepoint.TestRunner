@@ -1,4 +1,4 @@
-﻿namespace NUnit.HostedRunner
+﻿namespace NUnit.Hosted
 {
     public class TestResult
     {

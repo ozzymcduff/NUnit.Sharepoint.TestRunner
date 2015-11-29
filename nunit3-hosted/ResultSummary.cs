@@ -25,7 +25,7 @@ using System;
 using System.Globalization;
 using System.Xml;
 using NUnit.Common;
-namespace NUnit.ConsoleRunner
+namespace NUnit.Hosted
 {
     using Utilities;
 

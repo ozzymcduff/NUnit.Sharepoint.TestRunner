@@ -26,7 +26,7 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace NUnit.ConsoleRunner.Utilities
+namespace NUnit.Hosted.Utilities
 {
     using Common;
     using System;
