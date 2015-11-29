@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit3-hosted", "nunit3-hos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit3-hosted-aspnet", "nunit3-hosted-aspnet\nunit3-hosted-aspnet.csproj", "{611ECDE9-B78B-4C58-93AD-EF3B978B4951}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit3-hosted-aspnet.tests", "nunit3-hosted-aspnet.tests\nunit3-hosted-aspnet.tests.csproj", "{464FBE8C-6EE5-4BDD-84AE-2715B2AEB19D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{611ECDE9-B78B-4C58-93AD-EF3B978B4951}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{611ECDE9-B78B-4C58-93AD-EF3B978B4951}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{611ECDE9-B78B-4C58-93AD-EF3B978B4951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{464FBE8C-6EE5-4BDD-84AE-2715B2AEB19D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{464FBE8C-6EE5-4BDD-84AE-2715B2AEB19D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{464FBE8C-6EE5-4BDD-84AE-2715B2AEB19D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{464FBE8C-6EE5-4BDD-84AE-2715B2AEB19D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
