@@ -4,6 +4,7 @@ namespace NUnit.Hosted
 {
     public class HostedOptions
     {
+        public string DisplayTestLabels { get; internal set; }
         public string InputFiles { get; internal set; }
         public string InternalTraceLevel { get; internal set; }
         public bool StopOnError { get; internal set; }

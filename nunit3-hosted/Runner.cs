@@ -34,7 +34,6 @@ namespace NUnit.Hosted
     {
         private ITestEngine _engine;
         private HostedOptions _options;
-        private string labels;
         private IResultService _resultService;
         private ITestFilterService _filterService;
 
@@ -58,6 +57,10 @@ namespace NUnit.Hosted
             {
                 try
                 {
+                    var labels = !string.IsNullOrEmpty( _options.DisplayTestLabels)
+                       ? _options.DisplayTestLabels.ToUpperInvariant()
+                       : "ON";
+
                     var eventHandler = new TestEventHandler(output, labels, _options.TeamCity);
 
                     result = runner.Run(eventHandler, filter);
@@ -145,7 +148,6 @@ namespace NUnit.Hosted
 
                 if (options.InternalTraceLevel != null)
                     engine.InternalTraceLevel = (InternalTraceLevel)Enum.Parse(typeof(InternalTraceLevel), options.InternalTraceLevel);
-
                 return new Runner(engine, options).Execute();
             }
         }

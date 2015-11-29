@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web;
 
-
 namespace NUnit.Hosted.AspNet
 {
     public class HttpUtility
@@ -12,7 +11,8 @@ namespace NUnit.Hosted.AspNet
 
         public static string GetLastPath(string path)
         {
-            return (path ?? "").Split(new []{'/'}, StringSplitOptions.RemoveEmptyEntries).Last();
+            var pieces = (path ?? "").Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            return pieces[pieces.Length - 1];
         }
 
         public static IHttpContext Wrap(HttpContext context)
