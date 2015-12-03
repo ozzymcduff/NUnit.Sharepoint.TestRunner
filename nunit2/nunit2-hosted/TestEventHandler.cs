@@ -66,6 +66,7 @@ namespace NUnit.Hosted
 
         public void RunFinished(Exception exception)
         {
+
         }
 
         public void TestFinished(TestResult testResult)
@@ -122,8 +123,6 @@ namespace NUnit.Hosted
         public void TestStarted(TestName testName)
         {
             this.currentTestName = testName.FullName;
-            if (this.options.labels)
-                this.outWriter.WriteLine("***** {0}", (object)this.currentTestName);
         }
 
         public void SuiteStarted(TestName testName)
@@ -145,6 +144,7 @@ namespace NUnit.Hosted
 
         public void UnhandledException(Exception exception)
         {
+            unhandledExceptions++;
             this.outWriter.WriteLine((this.currentTestName + " : " + exception.ToString()));
         }
 

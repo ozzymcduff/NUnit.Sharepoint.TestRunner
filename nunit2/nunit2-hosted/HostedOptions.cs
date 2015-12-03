@@ -9,18 +9,10 @@ namespace NUnit.Hosted
 {
     public class HostedOptions
     {
-        //Label each test in stdOut
-        public bool labels = false;
         //    Apartment for running tests: MTA (Default), STA
         public ApartmentState apartment = ApartmentState.Unknown;
         /// Project configuration (e.g.: Debug) to load
         public string config;
-        /// Name of XML result file (Default: TestResult.xml)", Short = "xml
-        public string result;
-        ///    File to receive test output", Short = "out
-        public string output;
-        /// Work directory for output files
-        public string work;
         /// Set internal trace level: Off, Error, Warning, Info, Verbose
         public InternalTraceLevel trace;
         ///List of categories to include
@@ -43,9 +35,6 @@ namespace NUnit.Hosted
         public string privatebinpath;
         ///Set timeout for each test case in milliseconds
         public int timeout;
-        ///Erase any leftover cache files and exit
-        public bool cleanup;
-
         public string InputFiles { get; set; }
         public string WorkDirectory { get; set; }
 
