@@ -32,6 +32,7 @@ using NUnit.Core.Filters;
 
 namespace NUnit.Hosted
 {
+    using TestResult2 = NUnit.Hosted.TestResult;
     public class Runner
     {
         private readonly HostedOptions _options;
@@ -43,7 +44,7 @@ namespace NUnit.Hosted
 
         private TestResult2 RunTests(TestPackage package, TestFilter filter)
         {
-            TestResult result;
+            NUnit.Core.TestResult result;
             ProcessModel processModel = package.Settings.Contains("ProcessModel") ? (ProcessModel)package.Settings["ProcessModel"] : ProcessModel.Default;
             DomainUsage domainUsage = package.Settings.Contains("DomainUsage") ? (DomainUsage)package.Settings[(object)"DomainUsage"] : DomainUsage.Default;
             RuntimeFramework runtimeFramework = package.Settings.Contains("RuntimeFramework") ? (RuntimeFramework)package.Settings["RuntimeFramework"] : RuntimeFramework.CurrentFramework;
@@ -128,36 +129,10 @@ namespace NUnit.Hosted
             testFilter = TestFilter.Empty;
             SimpleNameFilter simpleNameFilter = new SimpleNameFilter();
 
-            if (options.include != null && options.include != string.Empty)
-            {
-                TestFilter filter = new CategoryExpression(options.include).Filter;
-                Console.WriteLine("Included categories: " + filter.ToString());
-                if (testFilter.IsEmpty)
-                    testFilter = filter;
-                else
-                    testFilter = new AndFilter(new ITestFilter[2]
-                    {
-             testFilter,
-             filter
-                    });
-            }
-            if (options.exclude != null && options.exclude != string.Empty)
-            {
-                TestFilter testFilter1 = new NotFilter(new CategoryExpression(options.exclude).Filter);
-                Console.WriteLine("Excluded categories: " + testFilter1.ToString());
-                if (testFilter.IsEmpty)
-                    testFilter = testFilter1;
-                else if (testFilter is AndFilter)
-                    ((AndFilter)testFilter).Add(testFilter1);
-                else
-                    testFilter = new AndFilter(new ITestFilter[2]
-                    {
-             testFilter,
-             testFilter1
-                    });
-            }
             if (testFilter is NotFilter)
+            {
                 ((NotFilter)testFilter).TopLevel = true;
+            }
             return true;
         }
 
@@ -168,27 +143,14 @@ namespace NUnit.Hosted
             TestPackage testPackage;
             DomainUsage domainUsage;
             NUnitProject nunitProject = Services.ProjectService.LoadProject(options.InputFiles);
-            string name = options.config;
-            if (name != null)
-                nunitProject.SetActiveConfig(name);
             testPackage = nunitProject.ActiveConfig.MakeTestPackage();
             processModel = nunitProject.ProcessModel;
             domainUsage = nunitProject.DomainUsage;
             runtimeFramework = nunitProject.ActiveConfig.RuntimeFramework;
 
-            if (options.basepath != null && options.basepath != string.Empty)
-                testPackage.BasePath = options.basepath;
-            if (options.privatebinpath != null && options.privatebinpath != string.Empty)
-            {
-                testPackage.AutoBinPath = false;
-                testPackage.PrivateBinPath = options.privatebinpath;
-            }
-            if (options.framework != null)
-                runtimeFramework = RuntimeFramework.Parse(options.framework);
-            if (options.process != ProcessModel.Default)
-                processModel = options.process;
-            if (options.domain != DomainUsage.Default)
-                domainUsage = options.domain;
+            if (!string.IsNullOrEmpty( options.WorkDirectory ))
+                testPackage.BasePath = options.WorkDirectory;
+            
             testPackage.TestName = null;
             testPackage.Settings["ProcessModel"] = processModel;
             testPackage.Settings["DomainUsage"] = domainUsage;
@@ -196,13 +158,13 @@ namespace NUnit.Hosted
                 testPackage.Settings["RuntimeFramework"] = runtimeFramework;
             // if (domainUsage == DomainUsage.None)
             //   CoreExtensions.Host.AddinRegistry = Services.AddinRegistry;
-            testPackage.Settings["ShadowCopyFiles"] = !options.noshadow;
-            testPackage.Settings["UseThreadedRunner"] = !options.nothread;
-            testPackage.Settings["DefaultTimeout"] = options.timeout;
+            testPackage.Settings["ShadowCopyFiles"] = !false;
+            testPackage.Settings["UseThreadedRunner"] = !false;
+            testPackage.Settings["DefaultTimeout"] = 0;
             testPackage.Settings["WorkDirectory"] = options.WorkDirectory;
             testPackage.Settings["StopOnError"] = false;
-            if (options.apartment != ApartmentState.Unknown)
-                testPackage.Settings["ApartmentState"] = options.apartment;
+            //if (options.apartment != ApartmentState.Unknown)
+            //    testPackage.Settings["ApartmentState"] = options.apartment;
             return testPackage;
         }
         private static bool init = false;

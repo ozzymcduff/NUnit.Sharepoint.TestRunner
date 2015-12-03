@@ -51,14 +51,20 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\nunit3\nunit3-hosted\HostedOptions.cs">
+      <Link>HostedOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\ResultSummary.cs">
+      <Link>ResultSummary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\TestResult.cs">
+      <Link>TestResult.cs</Link>
+    </Compile>
     <Compile Include="..\..\nunit3\nunit3-hosted\Utilities\SaveConsoleOutput.cs">
       <Link>Utilities\SaveConsoleOutput.cs</Link>
     </Compile>
-    <Compile Include="HostedOptions.cs" />
-    <Compile Include="ResultSummary.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="TestEventHandler.cs" />
-    <Compile Include="TestResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />

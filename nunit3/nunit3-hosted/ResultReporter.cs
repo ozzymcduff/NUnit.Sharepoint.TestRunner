@@ -28,6 +28,7 @@ using NUnit.Common;
 
 namespace NUnit.Hosted
 {
+    using Common;
     using System.IO;
     using Utilities;
 
@@ -51,8 +52,91 @@ namespace NUnit.Hosted
 
             _options = options;
 
-            Summary = new ResultSummary(result);
+            Summary = ReadResultSummary(result);
         }
+
+        #region Constructor
+
+        private static ResultSummary ReadResultSummary(XmlNode result)
+        {
+            if (result.Name != "test-run")
+                throw new InvalidOperationException("Expected <test-run> as top-level element but was <" + result.Name + ">");
+            var s = new ResultSummary();
+            ResultSummary.InitializeCounters(s);
+
+            Summarize(s, result);
+            return s;
+        }
+
+        #endregion
+        #region Helper Methods
+
+        private static void Summarize(ResultSummary s, XmlNode node)
+        {
+            string type = node.GetAttribute("type");
+            string status = node.GetAttribute("result");
+            string label = node.GetAttribute("label");
+
+            switch (node.Name)
+            {
+                case "test-case":
+                    s.TestCount++;
+
+                    switch (status)
+                    {
+                        case "Passed":
+                            s.PassCount++;
+                            break;
+                        case "Failed":
+                            if (label == null)
+                                s.FailureCount++;
+                            else if (label == "Invalid")
+                                s.InvalidCount++;
+                            else
+                                s.ErrorCount++;
+                            break;
+                        case "Inconclusive":
+                            s.InconclusiveCount++;
+                            break;
+                        case "Skipped":
+                            if (label == "Ignored")
+                                s.IgnoreCount++;
+                            else if (label == "Explicit")
+                                s.ExplicitCount++;
+                            else
+                                s.SkipCount++;
+                            break;
+                        default:
+                            s.SkipCount++;
+                            break;
+                    }
+                    break;
+
+                case "test-suite":
+                    if (type == "Assembly" && status == "Failed" && label == "Invalid")
+                        s.InvalidAssemblies++;
+                    if (type == "Assembly" && status == "Failed" && label == "Error")
+                    {
+                        s.InvalidAssemblies++;
+                        s.UnexpectedError = true;
+                    }
+
+                    Summarize(s, node.ChildNodes);
+                    break;
+
+                case "test-run":
+                    Summarize(s, node.ChildNodes);
+                    break;
+            }
+        }
+
+        private static void Summarize(ResultSummary s, XmlNodeList nodes)
+        {
+            foreach (XmlNode childResult in nodes)
+                Summarize(s, childResult);
+        }
+
+        #endregion
 
         public ResultSummary Summary { get; private set; }
 
@@ -70,8 +154,6 @@ namespace NUnit.Hosted
                 WriteErrorsAndFailuresReport();
 
             WriteRunSettingsReport();
-
-            WriteSummaryReport();
         }
 
         #region
@@ -102,53 +184,13 @@ namespace NUnit.Hosted
 
         #endregion
 
-        #region Summary Report
-
-        public void WriteSummaryReport()
-        {
-            _writer.WriteLine("Test Run Summary");
-            _writer.WriteLine("    Overall result: "+ _overallResult);
-
-            WriteSummaryCount("   Tests run: ", Summary.RunCount);
-            WriteSummaryCount(", Passed: ", Summary.PassCount);
-            WriteSummaryCount(", Errors: ", Summary.ErrorCount);
-            WriteSummaryCount(", Failures: ", Summary.FailureCount);
-            WriteSummaryCount(", Inconclusive: ", Summary.InconclusiveCount);
-            _writer.WriteLine();
-
-            WriteSummaryCount("     Not run: ", Summary.NotRunCount);
-            WriteSummaryCount(", Invalid: ", Summary.InvalidCount);
-            WriteSummaryCount(", Ignored: ", Summary.IgnoreCount);
-            WriteSummaryCount(", Explicit: ", Summary.ExplicitCount);
-            WriteSummaryCount(", Skipped: ", Summary.SkipCount);
-            _writer.WriteLine();
-
-            var duration = _result.GetAttribute("duration", 0.0);
-            var startTime = _result.GetAttribute("start-time", DateTime.MinValue);
-            var endTime = _result.GetAttribute("end-time", DateTime.MaxValue);
-
-            _writer.WriteLine("  Start time: "+ startTime.ToString("u"));
-            _writer.WriteLine("    End time: "+ endTime.ToString("u"));
-            _writer.WriteLine("    Duration: "+ string.Format("{0} seconds", duration.ToString("0.000")));
-            _writer.WriteLine();
-        }
-
-        #endregion
 
         #region Errors and Failures Report
 
         public void WriteErrorsAndFailuresReport()
         {
             _reportIndex = 0;
-            _writer.WriteLine( "Errors and Failures");
-            _writer.WriteLine();
             WriteErrorsAndFailures(_result);
-
-            if (_options.StopOnError)
-            {
-                _writer.WriteLine( "Execution terminated after first error");
-                _writer.WriteLine();
-            }
         }
 
         private void WriteErrorsAndFailures(XmlNode result)

@@ -63,7 +63,6 @@
     <Compile Include="ResultReporter.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Utilities\SaveConsoleOutput.cs" />
-    <Compile Include="Utilities\TeamCityServiceMessagePublisher.cs" />
     <Compile Include="TestEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestResult.cs" />

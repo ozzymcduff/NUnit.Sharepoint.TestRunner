@@ -38,16 +38,11 @@ namespace NUnit.Hosted
     {
         private readonly string _displayLabels;
         private readonly TextWriter _outWriter;
-        private readonly TeamCityServiceMessagePublisher _teamCity;
 
-        public TestEventHandler(TextWriter outWriter, string displayLabels, bool teamCity)
+        public TestEventHandler(TextWriter outWriter, string displayLabels)
         {
             _displayLabels = displayLabels;
             _outWriter = outWriter;
-            if (teamCity)
-            {
-                _teamCity = new TeamCityServiceMessagePublisher(outWriter);
-            }
         }
 
         #region ITestEventHandler Members
@@ -63,11 +58,6 @@ namespace NUnit.Hosted
                 case "test-case":
                     TestFinished(testEvent);
                     break;
-            }
-
-            if (_teamCity != null)
-            {
-                _teamCity.RegisterMessage(testEvent);
             }
         }
 

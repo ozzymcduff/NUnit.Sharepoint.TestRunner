@@ -25,8 +25,6 @@ using System;
 using System.IO;
 using NUnit.Core;
 using NUnit.Util;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -34,22 +32,16 @@ namespace NUnit.Hosted
 {
     public class TestEventHandler : MarshalByRefObject, EventListener
     {
-        private int unhandledExceptions;
-        private int testIgnoreCount;
-        private int failureCount;
         private int level;
         private HostedOptions options;
         private TextWriter outWriter;
         private string currentTestName;
-        private int errorCount;
-        private int inconclusiveCount;
-        private int invalidCount;
-        private int passCount;
-        private int skipCount;
+        private ResultSummary s;
 
         public TestEventHandler(HostedOptions options, TextWriter outWriter)
         {
             this.level = 0;
+            this.s = new ResultSummary();
             this.options = options;
             this.outWriter = outWriter;
             this.currentTestName = string.Empty;
@@ -60,7 +52,7 @@ namespace NUnit.Hosted
         {
         }
 
-        public void RunFinished(TestResult result)
+        public void RunFinished(NUnit.Core.TestResult result)
         {
         }
 
@@ -69,44 +61,45 @@ namespace NUnit.Hosted
 
         }
 
-        public void TestFinished(TestResult testResult)
+        public void TestFinished(NUnit.Core.TestResult testResult)
         {
+            ++this.s.TestCount;
             switch (testResult.ResultState)
             {
                 case ResultState.Inconclusive:
-                    ++this.inconclusiveCount;
+                    ++this.s.InconclusiveCount;
                     break;
                 case ResultState.Success:
-                    ++this.passCount;
+                    ++this.s.PassCount;
                     break;
                 case ResultState.NotRunnable:
-                    ++this.invalidCount;
+                    ++this.s.InvalidCount;
                     break;
                 case ResultState.Skipped:
-                    ++this.skipCount;
+                    ++this.s.SkipCount;
                     break;
                 case ResultState.Ignored:
-                    ++this.testIgnoreCount;
+                    ++this.s.IgnoreCount;
                     break;
                 case ResultState.Failure:
-                    ++this.failureCount;
+                    ++this.s.FailureCount;
                     FormatStackTrace(testResult);
                     break;
                 case ResultState.Error:
-                    ++this.errorCount;
+                    ++this.s.ErrorCount;
                     FormatStackTrace(testResult);
                     break;
                 case ResultState.Cancelled:
-                    ++this.failureCount;
+                    ++this.s.FailureCount;
                     FormatStackTrace(testResult);
                     break;
             }
             this.currentTestName = string.Empty;
         }
 
-        private void FormatStackTrace(TestResult testResult)
+        private void FormatStackTrace(NUnit.Core.TestResult testResult)
         {
-            this.outWriter.WriteLine(string.Format("{0}) {1} :", this.failureCount, testResult.Test.TestName.FullName));
+            this.outWriter.WriteLine(string.Format("{0}) {1} :", this.s.FailureCount, testResult.Test.TestName.FullName));
             this.outWriter.WriteLine(testResult.Message.Trim(Environment.NewLine.ToCharArray()));
             string filteredStackTrace = StackTraceFilter.Filter(testResult.StackTrace);
             if (filteredStackTrace != null && filteredStackTrace != string.Empty)
@@ -129,9 +122,10 @@ namespace NUnit.Hosted
         {
             if (this.level++ != 0)
                 return;
+            ResultSummary.InitializeCounters(s);
         }
 
-        public void SuiteFinished(TestResult suiteResult)
+        public void SuiteFinished(NUnit.Core.TestResult suiteResult)
         {
         }
 
@@ -144,7 +138,7 @@ namespace NUnit.Hosted
 
         public void UnhandledException(Exception exception)
         {
-            unhandledExceptions++;
+            s.UnexpectedError = true;
             this.outWriter.WriteLine((this.currentTestName + " : " + exception.ToString()));
         }
 
@@ -162,16 +156,17 @@ namespace NUnit.Hosted
         {
             return new ResultSummary
             {
-                FailureCount = this.failureCount,
-                ErrorCount = this.errorCount,
-                ExplicitCount = 0,
-                IgnoreCount = this.testIgnoreCount,
-                InconclusiveCount = this.inconclusiveCount,
-                InvalidAssemblies = 0,
-                InvalidCount = this.invalidCount,
-                PassCount = this.passCount,
-                SkipCount = this.skipCount,
-                UnexpectedError = this.unhandledExceptions > 0
+                TestCount = s.TestCount,
+                FailureCount = s.FailureCount,
+                ErrorCount = s.ErrorCount,
+                ExplicitCount = s.ExplicitCount,
+                IgnoreCount = s.IgnoreCount,
+                InconclusiveCount = s.InconclusiveCount,
+                InvalidAssemblies = s.InvalidAssemblies,
+                InvalidCount = s.InvalidCount,
+                PassCount = s.PassCount,
+                SkipCount = s.SkipCount,
+                UnexpectedError = s.UnexpectedError
             };
         }
     }

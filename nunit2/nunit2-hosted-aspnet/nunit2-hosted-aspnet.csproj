@@ -84,8 +84,9 @@
   </ProjectExtensions>
   <ItemGroup>
     <Content Include="Api.ashx" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\Api.ashx.cs">
+      <Link>Api.ashx.cs</Link>
+    </Compile>
     <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\HttpContextWrapper.cs">
       <Link>HttpWrappers\HttpContextWrapper.cs</Link>
     </Compile>
@@ -107,10 +108,9 @@
     <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\IHttpResponse.cs">
       <Link>HttpWrappers\IHttpResponse.cs</Link>
     </Compile>
-    <Compile Include="Api.ashx.cs">
-      <DependentUpon>Api.ashx</DependentUpon>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\Serializer.cs">
+      <Link>Serializer.cs</Link>
     </Compile>
-    <Compile Include="Serializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestsInWebContext\TestsInWebContext.csproj">

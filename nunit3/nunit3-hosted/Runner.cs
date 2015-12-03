@@ -57,11 +57,9 @@ namespace NUnit.Hosted
             {
                 try
                 {
-                    var labels = !string.IsNullOrEmpty( _options.DisplayTestLabels)
-                       ? _options.DisplayTestLabels.ToUpperInvariant()
-                       : "ON";
+                    var labels = "ON";
 
-                    var eventHandler = new TestEventHandler(output, labels, _options.TeamCity);
+                    var eventHandler = new TestEventHandler(output, labels);
 
                     result = runner.Run(eventHandler, filter);
                     var reporter = new ResultReporter(result, output, _options);
@@ -131,14 +129,7 @@ namespace NUnit.Hosted
 
         private TestFilter CreateTestFilter(HostedOptions _options)
         {
-            ITestFilterBuilder builder = _filterService.GetTestFilterBuilder();
-
-            foreach (string testName in _options.TestList)
-                builder.AddTest(testName);
-
-            if (_options.WhereClauseSpecified)
-                builder.SelectWhere(_options.WhereClause);
-
+            var builder = _filterService.GetTestFilterBuilder();
             return builder.GetFilter();
         }
 
@@ -157,8 +148,6 @@ namespace NUnit.Hosted
                 if (options.WorkDirectory != null)
                     engine.WorkDirectory = options.WorkDirectory;
 
-                if (options.InternalTraceLevel != null)
-                    engine.InternalTraceLevel = (InternalTraceLevel)Enum.Parse(typeof(InternalTraceLevel), options.InternalTraceLevel);
                 return new Runner(engine, options).Execute();
             }
         }

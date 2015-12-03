@@ -61,14 +61,8 @@ namespace NUnit.Hosted.AspNet
         {
             return Runner.Run(new HostedOptions
             {
-                InputFiles = Path.Combine(context.Request.MapPath("/"), "bin", "TestsInWebContext.dll"),
+                InputFiles = Path.Combine(Path.Combine(context.Request.MapPath("/"), "bin"), "TestsInWebContext.dll"),
                 WorkDirectory = this.GetType().Assembly.Location,
-                StopOnError = false,
-                DisplayTestLabels = null,
-                InternalTraceLevel = null,
-                TeamCity = false,
-                TestList = new string[0],
-                WhereClause = null
             });
         }
 
