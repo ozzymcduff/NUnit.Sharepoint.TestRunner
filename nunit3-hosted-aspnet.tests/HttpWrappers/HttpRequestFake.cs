@@ -33,6 +33,11 @@ namespace Tests
                 return HttpMethodFake;
             }
         }
+
+        public string MapPath(string path)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
