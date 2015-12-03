@@ -55,19 +55,15 @@ namespace NUnit.Hosted
             {
                 try
                 {
-                    TestEventHandler eventCollector = new TestEventHandler(_options, output, output);
+                    TestEventHandler eventCollector = new TestEventHandler(_options, output);
                     testRunner.Load(package);
                     if (testRunner.Test == null)
                     {
                         testRunner.Unload();
                         return new TestResult2(TestResult2.Code.FixtureNotFound, "Unable to locate fixture");
                     }
-                    var labels = _options.labels;
-
-                    var eventHandler = new TestEventHandler(_options, output, output);
-
-                    result = testRunner.Run(eventHandler, filter, false, LoggingThreshold.All);
-                    var summary = eventHandler.GetSummary();
+                    result = testRunner.Run(eventCollector, filter, false, LoggingThreshold.All);
+                    var summary = eventCollector.GetSummary();
 
                     output.Flush();
                     if (summary.UnexpectedError)
