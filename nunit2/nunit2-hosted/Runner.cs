@@ -210,13 +210,13 @@ namespace NUnit.Hosted
         {
             if (!init)
             {
-                SettingsService settingsService = new SettingsService();
-                ServiceManager.Services.AddService((IService)settingsService);
-                ServiceManager.Services.AddService((IService)new DomainManager());
-                ServiceManager.Services.AddService((IService)new ProjectService());
-                ServiceManager.Services.AddService((IService)new AddinRegistry());
-                ServiceManager.Services.AddService((IService)new AddinManager());
-                ServiceManager.Services.AddService((IService)new TestAgency());
+                ServiceManager.Services.ClearServices();
+                ServiceManager.Services.AddService(new SettingsService());
+                ServiceManager.Services.AddService(new DomainManager());
+                ServiceManager.Services.AddService(new ProjectService());
+                ServiceManager.Services.AddService(new AddinRegistry());
+                ServiceManager.Services.AddService(new AddinManager());
+                ServiceManager.Services.AddService(new TestAgency());
                 ServiceManager.Services.InitializeServices();
                 init = true;
             }
