@@ -69,39 +69,44 @@ namespace NUnit.Hosted
 
                     output.Flush();
                     if (reporter.Summary.UnexpectedError)
-                        return new TestResult(TestResult.UNEXPECTED_ERROR, GetResultText(ms));
+                        return new TestResult(TestResult.Code.UnexpectedError, GetResultText(ms), reporter.Summary);
 
                     return new TestResult(reporter.Summary.InvalidAssemblies > 0
-                            ? TestResult.INVALID_ASSEMBLY
-                            : reporter.Summary.FailureCount + reporter.Summary.ErrorCount + reporter.Summary.InvalidCount,
-                            GetResultText(ms));
-
+                            ? TestResult.Code.InvalidAssembly
+                            : GetCode( reporter.Summary.FailureCount + reporter.Summary.ErrorCount + reporter.Summary.InvalidCount),
+                            GetResultText(ms), reporter.Summary);
                 }
                 catch (NUnitEngineException ex)
                 {
                     output.WriteLine(ex.Message);
                     output.Flush();
-                    return new TestResult(TestResult.INVALID_ARG, GetResultText(ms));
+                    return new TestResult(TestResult.Code.InvalidArg, GetResultText(ms));
                 }
                 catch (FileNotFoundException ex)
                 {
                     output.WriteLine(ex.Message);
                     output.Flush();
-                    return new TestResult(TestResult.INVALID_ASSEMBLY, GetResultText(ms));
+                    return new TestResult(TestResult.Code.InvalidAssembly, GetResultText(ms));
                 }
                 catch (DirectoryNotFoundException ex)
                 {
                     output.WriteLine(ex.Message);
                     output.Flush();
-                    return new TestResult(TestResult.INVALID_ASSEMBLY, GetResultText(ms));
+                    return new TestResult(TestResult.Code.InvalidAssembly, GetResultText(ms));
                 }
                 catch (Exception ex)
                 {
                     output.WriteLine(ex.ToString());
                     output.Flush();
-                    return new TestResult(TestResult.UNEXPECTED_ERROR, GetResultText(ms));
+                    return new TestResult(TestResult.Code.UnexpectedError, GetResultText(ms));
                 }
             }
+        }
+
+        private TestResult.Code GetCode(int v)
+        {
+            if (v == 0) { return TestResult.Code.Ok; }
+            return TestResult.Code.TestFailure;
         }
 
         private string GetResultText(MemoryStream output)

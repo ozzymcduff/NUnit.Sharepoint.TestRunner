@@ -1,36 +1,56 @@
-﻿namespace NUnit.Hosted
+﻿using System.Text.RegularExpressions;
+
+namespace NUnit.Hosted
 {
     public class TestResult
     {
-        public const int OK = 0;
-        public const int INVALID_ARG = -1;
-        public const int INVALID_ASSEMBLY = -2;
-        public const int FIXTURE_NOT_FOUND = -3;
-        public const int UNEXPECTED_ERROR = -100;
+        public enum Code
+        {
+            Ok = 0,
+            InvalidArg = -1,
+            InvalidAssembly = -2,
+            FixtureNotFound = -3,
+            UnexpectedError = -100,
+            TestFailure = 100
+        }
+        private Code code;
+        public readonly string Message;
+        public readonly ResultSummary Summary;
+        public class ErrorCodeC
+        {
+            private Code code;
 
-        private int code;
-        public readonly string Text;
-        public string ErrorCode
+            public ErrorCodeC(Code code)
+            {
+                this.code = code;
+            }
+
+            public string Text
+            {
+                get
+                {
+                    return Regex.Replace(code.ToString(), "(?<=.)([A-Z])", " $0").ToLower();
+                }
+            }
+            public int Code { get { return (int)code; } }
+        }
+        public ErrorCodeC ErrorCode
         {
             get
             {
-                switch (code)
-                {
-                    case OK: return "OK";
-                    case INVALID_ARG: return "INVALID_ARG";
-                    case INVALID_ASSEMBLY: return "INVALID_ASSEMBLY";
-                    case FIXTURE_NOT_FOUND: return "FIXTURE_NOT_FOUND";
-                    case UNEXPECTED_ERROR: return "UNEXPECTED_ERROR";
-                    default:
-                        return "UNKNOWN ERROR CODE";
-                }
+                return new ErrorCodeC(this.code);
             }
         }
 
-        public TestResult(int code, string text)
+        public TestResult(Code code, string message)
         {
             this.code = code;
-            this.Text = text;
+            this.Message = message;
+        }
+
+        public TestResult(Code code, string message, ResultSummary summary) : this(code, message)
+        {
+            this.Summary = summary;
         }
     }
 }
