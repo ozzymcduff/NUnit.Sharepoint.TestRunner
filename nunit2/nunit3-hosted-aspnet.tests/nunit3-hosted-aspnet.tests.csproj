@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5F5F1FDA-5B2E-4CFC-B8B0-4809FA7B2B27}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>nunit3hostedaspnet.tests</RootNamespace>
+    <AssemblyName>nunit3-hosted-aspnet.tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\nunit2-hosted-aspnet\nunit2-hosted-aspnet.csproj">
+      <Project>{8B261DB7-6DF8-4C7C-BAE6-4837FB6454EB}</Project>
+      <Name>nunit2-hosted-aspnet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nunit2-hosted\nunit2-hosted.csproj">
+      <Project>{203D35FB-EBB1-4065-BE5D-1B7C68D8990A}</Project>
+      <Name>nunit2-hosted</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
