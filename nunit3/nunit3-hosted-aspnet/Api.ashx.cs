@@ -51,7 +51,7 @@ namespace NUnit.Hosted.AspNet
             }
             catch (Exception ex)
             {
-                context.Response.ContentType = "application/xml";
+                context.Response.ContentType = "application/json";
                 context.Response.StatusCode = 500;
                 context.Response.BinaryWrite(serializer.Serialize(ex));
             }

@@ -56,7 +56,12 @@ namespace NUnit.Hosted
                 try
                 {
                     TestEventHandler eventCollector = new TestEventHandler(_options, output, output);
-
+                    testRunner.Load(package);
+                    if (testRunner.Test == null)
+                    {
+                        testRunner.Unload();
+                        return new TestResult2(TestResult2.Code.FixtureNotFound, "Unable to locate fixture");
+                    }
                     var labels = _options.labels;
 
                     var eventHandler = new TestEventHandler(_options, output, output);
@@ -204,9 +209,21 @@ namespace NUnit.Hosted
                 testPackage.Settings["ApartmentState"] = options.apartment;
             return testPackage;
         }
-
+        private static bool init = false;
         public static TestResult2 Run(HostedOptions options)
         {
+            if (!init)
+            {
+                SettingsService settingsService = new SettingsService();
+                ServiceManager.Services.AddService((IService)settingsService);
+                ServiceManager.Services.AddService((IService)new DomainManager());
+                ServiceManager.Services.AddService((IService)new ProjectService());
+                ServiceManager.Services.AddService((IService)new AddinRegistry());
+                ServiceManager.Services.AddService((IService)new AddinManager());
+                ServiceManager.Services.AddService((IService)new TestAgency());
+                ServiceManager.Services.InitializeServices();
+                init = true;
+            }
             return new Runner(options).Execute();
         }
 
