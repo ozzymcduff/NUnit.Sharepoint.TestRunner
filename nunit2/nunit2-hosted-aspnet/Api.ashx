@@ -1,2 +1,2 @@
-﻿<%@ WebHandler Language="C#" Class="nunit2hostedaspnet.Api" %>
+﻿<%@ WebHandler Language="C#" Class="NUnit.Hosted.AspNet.Api" %>
 

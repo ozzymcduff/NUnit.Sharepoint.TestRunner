@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -6,9 +6,20 @@
     <ProjectTypeGuids>{349C5851-65DF-11DA-9384-00065B846F21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{8B261DB7-6DF8-4C7C-BAE6-4837FB6454EB}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>nunit2hostedaspnet</RootNamespace>
+    <RootNamespace>NUnit.Hosted.AspNet</RootNamespace>
     <AssemblyName>nunit2-hosted-aspnet</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,6 +40,14 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -41,14 +60,52 @@
         <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
       </Properties>
     </MonoDevelop>
+    <VisualStudio>
+      <FlavorProperties GUID="{349C5851-65DF-11DA-9384-00065B846F21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:56350/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
     <Content Include="Api.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\HttpContextWrapper.cs">
+      <Link>HttpWrappers\HttpContextWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\HttpRequestWrapper.cs">
+      <Link>HttpWrappers\HttpRequestWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\HttpResponseWrapper.cs">
+      <Link>HttpWrappers\HttpResponseWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\HttpUtility.cs">
+      <Link>HttpWrappers\HttpUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\IHttpContext.cs">
+      <Link>HttpWrappers\IHttpContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\IHttpRequest.cs">
+      <Link>HttpWrappers\IHttpRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\IHttpResponse.cs">
+      <Link>HttpWrappers\IHttpResponse.cs</Link>
+    </Compile>
     <Compile Include="Api.ashx.cs">
       <DependentUpon>Api.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Serializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestsInWebContext\TestsInWebContext.csproj">
@@ -60,4 +117,8 @@
       <Name>nunit2-hosted</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets" />
 </Project>

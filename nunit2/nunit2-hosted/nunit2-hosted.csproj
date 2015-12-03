@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{203D35FB-EBB1-4065-BE5D-1B7C68D8990A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>nunit2hosted</RootNamespace>
+    <OutputType>Library</OutputType>
+    <RootNamespace>NUnit.Hosted</RootNamespace>
     <AssemblyName>nunit2-hosted</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -27,5 +27,41 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.core">
+      <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.core.interfaces">
+      <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.core.interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.util">
+      <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.util.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Utilities\SaveConsoleOutput.cs">
+      <Link>Utilities\SaveConsoleOutput.cs</Link>
+    </Compile>
+    <Compile Include="HostedOptions.cs" />
+    <Compile Include="ResultSummary.cs" />
+    <Compile Include="Runner.cs" />
+    <Compile Include="TestEventHandler.cs" />
+    <Compile Include="TestResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
