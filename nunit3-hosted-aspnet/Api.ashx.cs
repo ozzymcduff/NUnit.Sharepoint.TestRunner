@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Web;
 
 namespace NUnit.Hosted.AspNet
@@ -10,7 +11,7 @@ namespace NUnit.Hosted.AspNet
     {
         private Serializer serializer;
 
-        public Api():this(new Serializer())
+        public Api() : this(new Serializer())
         {
 
         }
@@ -32,15 +33,11 @@ namespace NUnit.Hosted.AspNet
                 var command = HttpUtility.GetLastPath(context.Request.Url);
                 switch (command)
                 {
-                    case "Info":
-                        context.Response.ContentType = "application/xml";
-                        context.Response.BinaryWrite(serializer.Serialize(GetInfo()));
-                        return;
-                    case "Run":
-                        if (context.Request.HttpMethod.Equals("POST"))
+                    case "run":
+                        //if (context.Request.HttpMethod.Equals("GET"))
                         {
-                            context.Response.ContentType = "application/xml";
-                            context.Response.BinaryWrite(serializer.Serialize(RunTests()));
+                            context.Response.ContentType = "application/json";
+                            context.Response.BinaryWrite(serializer.Serialize(RunTests(context)));
                             return;
                         }
                         break;
@@ -60,14 +57,19 @@ namespace NUnit.Hosted.AspNet
             }
         }
 
-        private object RunTests()
+        private object RunTests(IHttpContext context)
         {
-            throw new NotImplementedException();
-        }
-
-        private object GetInfo()
-        {
-            throw new NotImplementedException();
+            return Runner.Run(new HostedOptions
+            {
+                InputFiles = Path.Combine(context.Request.MapPath("/"), "bin", "TestsInWebContext.dll"),
+                WorkDirectory = this.GetType().Assembly.Location,
+                StopOnError = false,
+                DisplayTestLabels = null,
+                InternalTraceLevel = null,
+                TeamCity = false,
+                TestList = new string[0],
+                WhereClause = null
+            });
         }
 
         public bool IsReusable

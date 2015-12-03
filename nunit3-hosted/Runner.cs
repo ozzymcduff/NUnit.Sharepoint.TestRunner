@@ -27,15 +27,16 @@ using NUnit.Engine;
 using System.IO;
 using NUnit.Hosted.Utilities;
 using System.Xml;
+using NUnit.Common;
 
 namespace NUnit.Hosted
 {
     public class Runner
     {
-        private ITestEngine _engine;
-        private HostedOptions _options;
-        private IResultService _resultService;
-        private ITestFilterService _filterService;
+        private readonly ITestEngine _engine;
+        private readonly HostedOptions _options;
+        private readonly IResultService _resultService;
+        private readonly ITestFilterService _filterService;
 
         public Runner(ITestEngine engine, HostedOptions options)
         {
@@ -43,7 +44,6 @@ namespace NUnit.Hosted
             _options = options;
             _resultService = _engine.Services.GetService<IResultService>();
             _filterService = _engine.Services.GetService<ITestFilterService>();
-
         }
 
         private TestResult RunTests(TestPackage package, TestFilter filter)
@@ -80,21 +80,25 @@ namespace NUnit.Hosted
                 catch (NUnitEngineException ex)
                 {
                     output.WriteLine(ex.Message);
+                    output.Flush();
                     return new TestResult(TestResult.INVALID_ARG, GetResultText(ms));
                 }
                 catch (FileNotFoundException ex)
                 {
                     output.WriteLine(ex.Message);
+                    output.Flush();
                     return new TestResult(TestResult.INVALID_ASSEMBLY, GetResultText(ms));
                 }
                 catch (DirectoryNotFoundException ex)
                 {
                     output.WriteLine(ex.Message);
+                    output.Flush();
                     return new TestResult(TestResult.INVALID_ASSEMBLY, GetResultText(ms));
                 }
                 catch (Exception ex)
                 {
                     output.WriteLine(ex.ToString());
+                    output.Flush();
                     return new TestResult(TestResult.UNEXPECTED_ERROR, GetResultText(ms));
                 }
             }
@@ -103,8 +107,8 @@ namespace NUnit.Hosted
         private string GetResultText(MemoryStream output)
         {
             output.Seek(0, SeekOrigin.Begin);
-            using (var reader = new StreamReader(output))
-                return reader.ReadToEnd();
+            var reader = new StreamReader(output);
+            return reader.ReadToEnd();
         }
 
         private TextWriter CreateOutputWriter(MemoryStream output)
@@ -136,6 +140,8 @@ namespace NUnit.Hosted
         public static TestPackage MakeTestPackage(HostedOptions options)
         {
             TestPackage package = new TestPackage(options.InputFiles);
+            package.AddSetting(PackageSettings.RuntimeFramework, "v4.0");
+
             return package;
         }
 

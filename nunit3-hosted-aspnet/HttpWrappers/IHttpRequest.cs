@@ -8,6 +8,7 @@ namespace NUnit.Hosted.AspNet
         Uri Url{get;}
         Stream InputStream{get;}
         string HttpMethod{ get;}
+        string MapPath(string path);
     }
 }
 

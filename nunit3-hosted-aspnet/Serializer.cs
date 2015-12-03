@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
+﻿using Newtonsoft.Json;
+using System.Text;
 
 namespace NUnit.Hosted.AspNet
 {
@@ -8,7 +7,7 @@ namespace NUnit.Hosted.AspNet
     {
         public byte[] Serialize(object p)
         {
-            throw new NotImplementedException();
+            return Encoding.UTF8.GetBytes( JsonConvert.SerializeObject(p));
         }
     }
 }

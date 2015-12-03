@@ -35,6 +35,11 @@ namespace NUnit.Hosted.AspNet
                 return request.HttpMethod;
             }
         }
+
+        public string MapPath(string path)
+        {
+            return request.MapPath(path);
+        }
     }
 }
 
