@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="18ba52d7-b535-4dc8-991a-04e2a34e1e49" solutionId="18ba52d7-b535-4dc8-991a-04e2a34e1e49" resetWebServer="false" name="nunit2_sharepoint" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <projectItems>
+    <projectItemReference itemId="516f1b57-03f8-4542-bafa-6e0a836f9b48" />
+  </projectItems>
+</package>
