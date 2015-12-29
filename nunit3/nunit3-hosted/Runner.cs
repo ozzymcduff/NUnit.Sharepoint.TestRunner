@@ -46,7 +46,7 @@ namespace NUnit.Hosted
             _filterService = _engine.Services.GetService<ITestFilterService>();
         }
 
-        private TestResult RunTests(TestPackage package, TestFilter filter)
+        private TestResults RunTests(TestPackage package, TestFilter filter, Messages.ISubscriber[] messageSubscribers)
         {
             XmlNode result;
 
@@ -58,8 +58,7 @@ namespace NUnit.Hosted
                 try
                 {
                     var labels = "ON";
-
-                    var eventHandler = new TestEventHandler(output, labels);
+                    var eventHandler = new TestEventHandler(output, labels, messageSubscribers);
 
                     result = runner.Run(eventHandler, filter);
                     var reporter = new ResultReporter(result, output, _options);
@@ -67,10 +66,10 @@ namespace NUnit.Hosted
 
                     output.Flush();
                     if (reporter.Summary.UnexpectedError)
-                        return new TestResult(TestResult.Code.UnexpectedError, GetResultText(ms), reporter.Summary);
+                        return new TestResults(TestResults.Code.UnexpectedError, GetResultText(ms), reporter.Summary);
 
-                    return new TestResult(reporter.Summary.InvalidAssemblies > 0
-                            ? TestResult.Code.InvalidAssembly
+                    return new TestResults(reporter.Summary.InvalidAssemblies > 0
+                            ? TestResults.Code.InvalidAssembly
                             : GetCode( reporter.Summary.FailureCount + reporter.Summary.ErrorCount + reporter.Summary.InvalidCount),
                             GetResultText(ms), reporter.Summary);
                 }
@@ -78,33 +77,33 @@ namespace NUnit.Hosted
                 {
                     output.WriteLine(ex.Message);
                     output.Flush();
-                    return new TestResult(TestResult.Code.InvalidArg, GetResultText(ms));
+                    return new TestResults(TestResults.Code.InvalidArg, GetResultText(ms));
                 }
                 catch (FileNotFoundException ex)
                 {
                     output.WriteLine(ex.Message);
                     output.Flush();
-                    return new TestResult(TestResult.Code.InvalidAssembly, GetResultText(ms));
+                    return new TestResults(TestResults.Code.InvalidAssembly, GetResultText(ms));
                 }
                 catch (DirectoryNotFoundException ex)
                 {
                     output.WriteLine(ex.Message);
                     output.Flush();
-                    return new TestResult(TestResult.Code.InvalidAssembly, GetResultText(ms));
+                    return new TestResults(TestResults.Code.InvalidAssembly, GetResultText(ms));
                 }
                 catch (Exception ex)
                 {
                     output.WriteLine(ex.ToString());
                     output.Flush();
-                    return new TestResult(TestResult.Code.UnexpectedError, GetResultText(ms));
+                    return new TestResults(TestResults.Code.UnexpectedError, GetResultText(ms));
                 }
             }
         }
 
-        private TestResult.Code GetCode(int v)
+        private TestResults.Code GetCode(int v)
         {
-            if (v == 0) { return TestResult.Code.Ok; }
-            return TestResult.Code.TestFailure;
+            if (v == 0) { return TestResults.Code.Ok; }
+            return TestResults.Code.TestFailure;
         }
 
         private string GetResultText(MemoryStream output)
@@ -119,12 +118,12 @@ namespace NUnit.Hosted
             return new StreamWriter(output);
         }
 
-        public TestResult Execute()
+        public TestResults Execute(Messages.ISubscriber[] messageSubscribers)
         {
             var package = MakeTestPackage(this._options);
             TestFilter filter = CreateTestFilter(_options);
 
-            return RunTests(package, filter);
+            return RunTests(package, filter, messageSubscribers);
         }
 
         private TestFilter CreateTestFilter(HostedOptions _options)
@@ -141,14 +140,14 @@ namespace NUnit.Hosted
             return package;
         }
 
-        public static TestResult Run(HostedOptions options)
+        public static TestResults Run(HostedOptions options, Messages.ISubscriber[] messageSubscribers)
         {
             using (ITestEngine engine = TestEngineActivator.CreateInstance())
             {
                 if (options.WorkDirectory != null)
                     engine.WorkDirectory = options.WorkDirectory;
 
-                return new Runner(engine, options).Execute();
+                return new Runner(engine, options).Execute(messageSubscribers);
             }
         }
 

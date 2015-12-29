@@ -32,7 +32,6 @@ using NUnit.Core.Filters;
 
 namespace NUnit.Hosted
 {
-    using TestResult2 = NUnit.Hosted.TestResult;
     public class Runner
     {
         private readonly HostedOptions _options;
@@ -42,7 +41,7 @@ namespace NUnit.Hosted
             _options = options;
         }
 
-        private TestResult2 RunTests(TestPackage package, TestFilter filter)
+        private TestResults RunTests(TestPackage package, TestFilter filter, Messages.ISubscriber[] subscribers)
         {
             NUnit.Core.TestResult result;
             ProcessModel processModel = package.Settings.Contains("ProcessModel") ? (ProcessModel)package.Settings["ProcessModel"] : ProcessModel.Default;
@@ -56,22 +55,22 @@ namespace NUnit.Hosted
             {
                 try
                 {
-                    TestEventHandler eventCollector = new TestEventHandler(_options, output);
+                    TestEventHandler eventCollector = new TestEventHandler(_options, output, subscribers);
                     testRunner.Load(package);
                     if (testRunner.Test == null)
                     {
                         testRunner.Unload();
-                        return new TestResult2(TestResult2.Code.FixtureNotFound, "Unable to locate fixture");
+                        return new TestResults(TestResults.Code.FixtureNotFound, "Unable to locate fixture");
                     }
                     result = testRunner.Run(eventCollector, filter, false, LoggingThreshold.All);
                     var summary = eventCollector.GetSummary();
 
                     output.Flush();
                     if (summary.UnexpectedError)
-                        return new TestResult2(TestResult2.Code.UnexpectedError, GetResultText(ms), summary);
+                        return new TestResults(TestResults.Code.UnexpectedError, GetResultText(ms), summary);
 
-                    return new TestResult2(summary.InvalidAssemblies > 0
-                            ? TestResult2.Code.InvalidAssembly
+                    return new TestResults(summary.InvalidAssemblies > 0
+                            ? TestResults.Code.InvalidAssembly
                             : GetCode(summary.FailureCount + summary.ErrorCount + summary.InvalidCount),
                             GetResultText(ms), summary);
                 }
@@ -79,27 +78,27 @@ namespace NUnit.Hosted
                 {
                     output.WriteLine(ex.Message);
                     output.Flush();
-                    return new TestResult2(TestResult2.Code.InvalidAssembly, GetResultText(ms));
+                    return new TestResults(TestResults.Code.InvalidAssembly, GetResultText(ms));
                 }
                 catch (DirectoryNotFoundException ex)
                 {
                     output.WriteLine(ex.Message);
                     output.Flush();
-                    return new TestResult2(TestResult2.Code.InvalidAssembly, GetResultText(ms));
+                    return new TestResults(TestResults.Code.InvalidAssembly, GetResultText(ms));
                 }
                 catch (Exception ex)
                 {
                     output.WriteLine(ex.ToString());
                     output.Flush();
-                    return new TestResult2(TestResult2.Code.UnexpectedError, GetResultText(ms));
+                    return new TestResults(TestResults.Code.UnexpectedError, GetResultText(ms));
                 }
             }
         }
 
-        private TestResult2.Code GetCode(int v)
+        private TestResults.Code GetCode(int v)
         {
-            if (v == 0) { return TestResult2.Code.Ok; }
-            return TestResult2.Code.TestFailure;
+            if (v == 0) { return TestResults.Code.Ok; }
+            return TestResults.Code.TestFailure;
         }
 
         private string GetResultText(MemoryStream output)
@@ -114,14 +113,14 @@ namespace NUnit.Hosted
             return new StreamWriter(output);
         }
 
-        public TestResult2 Execute()
+        public TestResults Execute(Messages.ISubscriber[] subscribers)
         {
             var package = MakeTestPackage(this._options);
             TestFilter testFilter;
             if (!CreateTestFilter(_options, out testFilter))
-                return new TestResult2(TestResult2.Code.InvalidArg, "");
+                return new TestResults(TestResults.Code.InvalidArg, "");
 
-            return RunTests(package, testFilter);
+            return RunTests(package, testFilter, subscribers);
         }
 
         private bool CreateTestFilter(HostedOptions options, out TestFilter testFilter)
@@ -168,7 +167,7 @@ namespace NUnit.Hosted
             return testPackage;
         }
         private static bool init = false;
-        public static TestResult2 Run(HostedOptions options)
+        public static TestResults Run(HostedOptions options, Messages.ISubscriber[] subscribers)
         {
             if (!init)
             {
@@ -182,7 +181,7 @@ namespace NUnit.Hosted
                 ServiceManager.Services.InitializeServices();
                 init = true;
             }
-            return new Runner(options).Execute();
+            return new Runner(options).Execute(subscribers);
         }
 
     }

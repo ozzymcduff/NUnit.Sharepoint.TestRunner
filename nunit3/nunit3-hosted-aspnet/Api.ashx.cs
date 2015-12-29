@@ -63,7 +63,7 @@ namespace NUnit.Hosted.AspNet
             {
                 InputFiles = Path.Combine(Path.Combine(context.Request.MapPath("/"), "bin"), "TestsInWebContext.dll"),
                 WorkDirectory = this.GetType().Assembly.Location,
-            });
+            }, null);
         }
 
         public bool IsReusable

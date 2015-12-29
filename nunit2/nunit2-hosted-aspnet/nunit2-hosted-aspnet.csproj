@@ -50,6 +50,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Web.Services" />
@@ -83,6 +85,20 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\NUnitRenderer.cs">
+      <Link>NUnitRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\TagBuilder.cs">
+      <Link>TagBuilder.cs</Link>
+    </Compile>
+    <Compile Include="Api.aspx.cs">
+      <DependentUpon>Api.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Api.aspx.designer.cs">
+      <DependentUpon>Api.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HttpWrappers\HttpUtility_net35.cs" />
     <Content Include="Api.ashx" />
     <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\Api.ashx.cs">
       <Link>Api.ashx.cs</Link>
@@ -123,6 +139,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Api.aspx" />
+    <Content Include="Content\nunit-hosted.css" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

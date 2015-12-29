@@ -118,6 +118,13 @@ namespace NUnit.Hosted
         /// An Unexpected error occurred
         /// </summary>
         public bool UnexpectedError { get; set; }
+        public bool IsFailure
+        {
+            get
+            {
+                return UnexpectedError || InvalidCount > 0 || ErrorCount > 0 || FailureCount > 0;
+            }
+        }
 
         #endregion
 

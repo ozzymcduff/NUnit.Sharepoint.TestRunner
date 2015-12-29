@@ -27,6 +27,7 @@ using NUnit.Core;
 using NUnit.Util;
 using System.Text.RegularExpressions;
 using System.Threading;
+using NUnit.Hosted.Utilities;
 
 namespace NUnit.Hosted
 {
@@ -37,28 +38,43 @@ namespace NUnit.Hosted
         private TextWriter outWriter;
         private string currentTestName;
         private ResultSummary s;
+        private readonly TestMessageSubscriberAdapter _messageSubscribeAdapter;
 
-        public TestEventHandler(HostedOptions options, TextWriter outWriter)
+        public TestEventHandler(HostedOptions options, TextWriter outWriter, Messages.ISubscriber[] subscribers)
         {
             this.level = 0;
             this.s = new ResultSummary();
             this.options = options;
             this.outWriter = outWriter;
             this.currentTestName = string.Empty;
+            this._messageSubscribeAdapter = subscribers != null
+                ? new TestMessageSubscriberAdapter(new Messages.CombineSubscribers(subscribers))
+                : null;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(this.OnUnhandledException);
         }
 
         public void RunStarted(string name, int testCount)
         {
+            if (this._messageSubscribeAdapter != null)
+            {
+                this._messageSubscribeAdapter.RunStarted(name, testCount);
+            }
         }
 
         public void RunFinished(NUnit.Core.TestResult result)
         {
+            if (this._messageSubscribeAdapter != null)
+            {
+                this._messageSubscribeAdapter.RunFinished(result);
+            }
         }
 
         public void RunFinished(Exception exception)
         {
-
+            if (this._messageSubscribeAdapter != null)
+            {
+                this._messageSubscribeAdapter.RunFinished(exception);
+            }
         }
 
         public void TestFinished(NUnit.Core.TestResult testResult)
@@ -94,6 +110,10 @@ namespace NUnit.Hosted
                     FormatStackTrace(testResult);
                     break;
             }
+            if (this._messageSubscribeAdapter != null)
+            {
+                this._messageSubscribeAdapter.TestFinished(testResult);
+            }
             this.currentTestName = string.Empty;
         }
 
@@ -116,6 +136,10 @@ namespace NUnit.Hosted
         public void TestStarted(TestName testName)
         {
             this.currentTestName = testName.FullName;
+            if (this._messageSubscribeAdapter != null)
+            {
+                this._messageSubscribeAdapter.TestStarted(testName);
+            }
         }
 
         public void SuiteStarted(TestName testName)
@@ -123,10 +147,18 @@ namespace NUnit.Hosted
             if (this.level++ != 0)
                 return;
             ResultSummary.InitializeCounters(s);
+            if (this._messageSubscribeAdapter != null)
+            {
+                this._messageSubscribeAdapter.SuiteStarted(testName);
+            }
         }
 
         public void SuiteFinished(NUnit.Core.TestResult suiteResult)
         {
+            if (this._messageSubscribeAdapter != null)
+            {
+                this._messageSubscribeAdapter.SuiteFinished(suiteResult);
+            }
         }
 
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

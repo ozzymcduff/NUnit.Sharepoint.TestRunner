@@ -38,11 +38,15 @@ namespace NUnit.Hosted
     {
         private readonly string _displayLabels;
         private readonly TextWriter _outWriter;
+        private readonly TestMessageSubscriberAdapter _messageSubscribeAdapter;
 
-        public TestEventHandler(TextWriter outWriter, string displayLabels)
+        public TestEventHandler(TextWriter outWriter, string displayLabels, Messages.ISubscriber[] subscribers)
         {
             _displayLabels = displayLabels;
             _outWriter = outWriter;
+            _messageSubscribeAdapter = subscribers != null
+                ? new TestMessageSubscriberAdapter(new Messages.CombineSubscribers(subscribers))
+                : null;
         }
 
         #region ITestEventHandler Members
@@ -58,6 +62,11 @@ namespace NUnit.Hosted
                 case "test-case":
                     TestFinished(testEvent);
                     break;
+            }
+
+            if (_messageSubscribeAdapter != null)
+            {
+                _messageSubscribeAdapter.RegisterMessage(testEvent);
             }
         }
 

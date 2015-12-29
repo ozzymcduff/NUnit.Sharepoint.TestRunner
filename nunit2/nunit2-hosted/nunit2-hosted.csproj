@@ -60,11 +60,24 @@
     <Compile Include="..\..\nunit3\nunit3-hosted\TestResult.cs">
       <Link>TestResult.cs</Link>
     </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\TestResults.cs">
+      <Link>TestResults.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Utilities\IMessage.cs">
+      <Link>Utilities\IMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Utilities\Messages.cs">
+      <Link>Utilities\Messages.cs</Link>
+    </Compile>
     <Compile Include="..\..\nunit3\nunit3-hosted\Utilities\SaveConsoleOutput.cs">
       <Link>Utilities\SaveConsoleOutput.cs</Link>
     </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Utilities\TeamCityMessageWriter.cs">
+      <Link>Utilities\TeamCityMessageWriter.cs</Link>
+    </Compile>
     <Compile Include="Runner.cs" />
     <Compile Include="TestEventHandler.cs" />
+    <Compile Include="Utilities\TestMessageSubscriberAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />

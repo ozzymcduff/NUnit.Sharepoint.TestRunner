@@ -62,11 +62,16 @@
     <Compile Include="HostedOptions.cs" />
     <Compile Include="ResultReporter.cs" />
     <Compile Include="Runner.cs" />
+    <Compile Include="Utilities\Messages.cs" />
+    <Compile Include="Utilities\IMessage.cs" />
     <Compile Include="Utilities\SaveConsoleOutput.cs" />
     <Compile Include="TestEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestResult.cs" />
+    <Compile Include="TestResults.cs" />
     <Compile Include="Common\XmlHelper.cs" />
+    <Compile Include="Utilities\TeamCityMessageWriter.cs" />
+    <Compile Include="TestResult.cs" />
+    <Compile Include="Utilities\TestMessageSubscriberAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

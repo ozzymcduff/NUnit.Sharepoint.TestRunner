@@ -1,56 +1,20 @@
-﻿using System.Text.RegularExpressions;
-
-namespace NUnit.Hosted
+﻿namespace NUnit.Hosted
 {
     public class TestResult
     {
-        public enum Code
-        {
-            Ok = 0,
-            InvalidArg = -1,
-            InvalidAssembly = -2,
-            FixtureNotFound = -3,
-            UnexpectedError = -100,
-            TestFailure = 100
-        }
-        private Code code;
-        public readonly string Message;
-        public readonly ResultSummary Summary;
-        public class ErrorCodeC
-        {
-            private Code code;
+        public int DurationMilliseconds;
+        public FailureResult Failure = new FailureResult();
+        public ReasonResult Reason = new ReasonResult();
+        public string Output;
 
-            public ErrorCodeC(Code code)
-            {
-                this.code = code;
-            }
-
-            public string Text
-            {
-                get
-                {
-                    return Regex.Replace(code.ToString(), "(?<=.)([A-Z])", " $0").ToLower();
-                }
-            }
-            public int Code { get { return (int)code; } }
-        }
-        public ErrorCodeC ErrorCode
+        public class FailureResult
         {
-            get
-            {
-                return new ErrorCodeC(this.code);
-            }
+            public string Message;
+            public string StackTrace;
         }
-
-        public TestResult(Code code, string message)
+        public class ReasonResult
         {
-            this.code = code;
-            this.Message = message;
-        }
-
-        public TestResult(Code code, string message, ResultSummary summary) : this(code, message)
-        {
-            this.Summary = summary;
+            public string Message;
         }
     }
 }

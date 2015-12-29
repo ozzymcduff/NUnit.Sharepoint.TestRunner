@@ -6,7 +6,7 @@ using System.Web;
 
 namespace NUnit.Hosted.AspNet
 {
-    public class HttpUtility
+    public partial class HttpUtility
     {
         public HttpUtility()
         {
@@ -26,6 +26,9 @@ namespace NUnit.Hosted.AspNet
         {
             return new HttpContextWrapper(context);
         }
+        public static string HtmlEncode(string value)
+        {
+            return System.Web.HttpUtility.HtmlEncode(value);
+        }
     }
 }
-
