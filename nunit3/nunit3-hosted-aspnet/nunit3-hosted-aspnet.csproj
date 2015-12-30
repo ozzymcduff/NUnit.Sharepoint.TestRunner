@@ -126,10 +126,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\nunit3-hosted\nunit3-hosted.csproj">
       <Project>{d4e49df5-6f89-4dc3-a645-ef0eded312b4}</Project>

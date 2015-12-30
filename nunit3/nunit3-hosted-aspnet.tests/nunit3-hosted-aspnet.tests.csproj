@@ -52,16 +52,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\nunit3-hosted-aspnet\nunit3-hosted-aspnet.csproj">
-      <Project>{611ecde9-b78b-4c58-93ad-ef3b978b4951}</Project>
-      <Name>nunit3-hosted-aspnet</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\nunit3-hosted-aspnet\nunit3-hosted-aspnet.csproj">
+      <Project>{611ecde9-b78b-4c58-93ad-ef3b978b4951}</Project>
+      <Name>nunit3-hosted-aspnet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nunit3-hosted\nunit3-hosted.csproj">
+      <Project>{d4e49df5-6f89-4dc3-a645-ef0eded312b4}</Project>
+      <Name>nunit3-hosted</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

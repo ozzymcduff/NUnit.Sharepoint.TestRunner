@@ -1,15 +1,15 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("nunit3-hosted")]
-[assembly: AssemblyDescription("nunit 3 runner for sharepoint projects (in order to be able to do integration tests)")]
+[assembly: AssemblyTitle("nunit2-hosted")]
+[assembly: AssemblyDescription("nunit 2 runner for sharepoint projects (in order to be able to do integration tests)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("wallymathieu")]
-[assembly: AssemblyProduct("nunit3-hosted")]
+[assembly: AssemblyProduct("nunit2-hosted")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d4e49df5-6f89-4dc3-a645-ef0eded312b4")]
+[assembly: Guid("292F430D-CE92-430C-9355-93AD306CCBFA")]
 
 // Version information for an assembly consists of the following four values:
 //
