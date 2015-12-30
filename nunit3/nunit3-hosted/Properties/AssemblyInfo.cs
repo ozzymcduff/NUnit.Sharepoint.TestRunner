@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("nunit3-hosted")]
+[assembly: AssemblyTitle("NUnit3.HostedRunner")]
 [assembly: AssemblyDescription("nunit 3 runner for sharepoint projects (in order to be able to do integration tests)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("wallymathieu")]
-[assembly: AssemblyProduct("nunit3-hosted")]
+[assembly: AssemblyProduct("NUnit3.HostedRunner")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

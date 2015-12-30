@@ -6,7 +6,7 @@
     <ProjectGuid>{203D35FB-EBB1-4065-BE5D-1B7C68D8990A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>NUnit.Hosted</RootNamespace>
-    <AssemblyName>nunit2-hosted</AssemblyName>
+    <AssemblyName>NUnit2.HostedRunner</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
