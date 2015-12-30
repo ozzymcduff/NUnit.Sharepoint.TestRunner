@@ -31,6 +31,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.core.dll</HintPath>
     </Reference>
@@ -45,6 +49,7 @@
       <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.util.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Web" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +80,40 @@
     <Compile Include="..\..\nunit3\nunit3-hosted\Utilities\TeamCityMessageWriter.cs">
       <Link>Utilities\TeamCityMessageWriter.cs</Link>
     </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\HttpWrappers\HttpContextWrapper.cs">
+      <Link>Web\HttpWrappers\HttpContextWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\HttpWrappers\HttpRequestWrapper.cs">
+      <Link>Web\HttpWrappers\HttpRequestWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\HttpWrappers\HttpResponseWrapper.cs">
+      <Link>Web\HttpWrappers\HttpResponseWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\HttpWrappers\HttpUtility.cs">
+      <Link>Web\HttpWrappers\HttpUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\HttpWrappers\IHttpContext.cs">
+      <Link>Web\HttpWrappers\IHttpContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\HttpWrappers\IHttpRequest.cs">
+      <Link>Web\HttpWrappers\IHttpRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\HttpWrappers\IHttpResponse.cs">
+      <Link>Web\HttpWrappers\IHttpResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\NUnitRenderer.cs">
+      <Link>Web\NUnitRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\Serializer.cs">
+      <Link>Web\Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\nunit3\nunit3-hosted\Web\TagBuilder.cs">
+      <Link>Web\TagBuilder.cs</Link>
+    </Compile>
     <Compile Include="Runner.cs" />
     <Compile Include="TestEventHandler.cs" />
     <Compile Include="Utilities\TestMessageSubscriberAdapter.cs" />
+    <Compile Include="Web\HttpWrappers\HttpUtility_net35.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />

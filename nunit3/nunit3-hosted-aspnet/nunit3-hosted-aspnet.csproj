@@ -124,17 +124,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HttpWrappers\HttpContextWrapper.cs" />
-    <Compile Include="HttpWrappers\HttpRequestWrapper.cs" />
-    <Compile Include="HttpWrappers\HttpResponseWrapper.cs" />
-    <Compile Include="HttpWrappers\HttpUtility.cs" />
-    <Compile Include="HttpWrappers\IHttpContext.cs" />
-    <Compile Include="HttpWrappers\IHttpRequest.cs" />
-    <Compile Include="HttpWrappers\IHttpResponse.cs" />
-    <Compile Include="NUnitRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serializer.cs" />
-    <Compile Include="TagBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

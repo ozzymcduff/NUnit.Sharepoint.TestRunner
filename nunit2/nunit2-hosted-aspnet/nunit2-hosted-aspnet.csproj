@@ -85,12 +85,6 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\NUnitRenderer.cs">
-      <Link>NUnitRenderer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\TagBuilder.cs">
-      <Link>TagBuilder.cs</Link>
-    </Compile>
     <Compile Include="Api.aspx.cs">
       <DependentUpon>Api.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -98,34 +92,9 @@
     <Compile Include="Api.aspx.designer.cs">
       <DependentUpon>Api.aspx</DependentUpon>
     </Compile>
-    <Compile Include="HttpWrappers\HttpUtility_net35.cs" />
     <Content Include="Api.ashx" />
     <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\Api.ashx.cs">
       <Link>Api.ashx.cs</Link>
-    </Compile>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\HttpContextWrapper.cs">
-      <Link>HttpWrappers\HttpContextWrapper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\HttpRequestWrapper.cs">
-      <Link>HttpWrappers\HttpRequestWrapper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\HttpResponseWrapper.cs">
-      <Link>HttpWrappers\HttpResponseWrapper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\HttpUtility.cs">
-      <Link>HttpWrappers\HttpUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\IHttpContext.cs">
-      <Link>HttpWrappers\IHttpContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\IHttpRequest.cs">
-      <Link>HttpWrappers\IHttpRequest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\HttpWrappers\IHttpResponse.cs">
-      <Link>HttpWrappers\IHttpResponse.cs</Link>
-    </Compile>
-    <Compile Include="..\..\nunit3\nunit3-hosted-aspnet\Serializer.cs">
-      <Link>Serializer.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
