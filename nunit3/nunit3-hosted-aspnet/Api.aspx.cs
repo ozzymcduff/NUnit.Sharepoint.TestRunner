@@ -12,7 +12,7 @@ namespace NUnit.Hosted.AspNet
         public int Failed { get { return result.Summary.FailureCount + result.Summary.ErrorCount; } }
         public bool Failure { get { return result.Summary.IsFailure; } }
         public string HeaderTitle { get; private set; }
-        public string TeamCity { get; private set; }
+        public string ConsoleOut { get; private set; }
         public string RenderedResults { get; private set; }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -32,7 +32,8 @@ namespace NUnit.Hosted.AspNet
                 });
                 tc_writer.Flush();
                 tc_output.Seek(0, SeekOrigin.Begin);
-                TeamCity = new StreamReader(tc_output).ReadToEnd();
+                ConsoleOut = result.Message + Environment.NewLine
+                    + new StreamReader(tc_output).ReadToEnd();
                 renderer_writer.Flush();
                 renderer_output.Seek(0, SeekOrigin.Begin);
                 RenderedResults = new StreamReader(renderer_output).ReadToEnd();

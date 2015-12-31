@@ -23,7 +23,7 @@
         </div>
     </form>
     <script type="text/javascript">
-        var msgs = '<%=HttpUtility.JavaScriptStringEncode(TeamCity)%>'.split(/[\n\r]+/);
+        var msgs = '<%=HttpUtility.JavaScriptStringEncode(ConsoleOut)%>'.split(/[\n\r]+/);
         for (var i = 0; i < msgs.length; i++) {
             console.log(msgs[i]);
         }
