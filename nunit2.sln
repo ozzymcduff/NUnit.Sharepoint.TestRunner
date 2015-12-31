@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit2-hosted-aspnet", "nunit2-hosted-aspnet\nunit2-hosted-aspnet.csproj", "{8B261DB7-6DF8-4C7C-BAE6-4837FB6454EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit2-hosted-aspnet", "nunit2\nunit2-hosted-aspnet\nunit2-hosted-aspnet.csproj", "{8B261DB7-6DF8-4C7C-BAE6-4837FB6454EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit2-hosted", "nunit2-hosted\nunit2-hosted.csproj", "{203D35FB-EBB1-4065-BE5D-1B7C68D8990A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit2-hosted", "nunit2\nunit2-hosted\nunit2-hosted.csproj", "{203D35FB-EBB1-4065-BE5D-1B7C68D8990A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsInWebContext", "TestsInWebContext\TestsInWebContext.csproj", "{FD7EC523-E5CD-4FD2-BFFA-20F80D0AC40D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsInWebContext", "nunit2\TestsInWebContext\TestsInWebContext.csproj", "{FD7EC523-E5CD-4FD2-BFFA-20F80D0AC40D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
