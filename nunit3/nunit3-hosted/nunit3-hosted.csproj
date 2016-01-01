@@ -63,6 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utilities\AppendMessagesToFile.cs" />
+    <Compile Include="Utilities\JsonConvertMessages.cs" />
     <Compile Include="Web\HttpWrappers\HttpContextWrapper.cs" />
     <Compile Include="Web\HttpWrappers\HttpRequestWrapper.cs" />
     <Compile Include="Web\HttpWrappers\HttpResponseWrapper.cs" />

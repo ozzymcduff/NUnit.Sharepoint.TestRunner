@@ -28,7 +28,8 @@ namespace NUnit.Hosted.AspNet
                     WorkDirectory = this.GetType().Assembly.Location,
                 }, new Messages.ISubscriber[] {
                     new TeamCityMessageWriter(tc_writer),
-                    new NUnitRenderer(context, renderer_writer)
+                    new NUnitRenderer(context, renderer_writer),
+                    //new AppendMessagesToFile("C:\\src\\messages.json")
                 });
                 tc_writer.Flush();
                 tc_output.Seek(0, SeekOrigin.Begin);
