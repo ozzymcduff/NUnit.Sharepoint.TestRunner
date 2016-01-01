@@ -76,7 +76,6 @@
     <Compile Include="HttpWrappers\HttpResponseFake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecordedMessages.cs" />
-    <Compile Include="TeamCityMessageTests.cs" />
     <Compile Include="TeamCityMessageWriterTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,10 +92,6 @@
     <ProjectReference Include="..\nunit3-hosted\nunit3-hosted.csproj">
       <Project>{d4e49df5-6f89-4dc3-a645-ef0eded312b4}</Project>
       <Name>nunit3-hosted</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TestsInWebContext\TestsInWebContext.csproj">
-      <Project>{3a75c762-948c-49b1-b5bf-98c9c634e835}</Project>
-      <Name>TestsInWebContext</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
