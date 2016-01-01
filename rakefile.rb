@@ -27,7 +27,7 @@ task :build => [:build_nunit2, :build_nunit3]
 
 desc "test using console"
 test_runner :test => [:build] do |runner|
-  runner.exe = NugetHelper::nunit_path
+  runner.exe = File.expand_path NugetHelper::nunit_path
   files = Dir.glob(File.join(dir, "**", "bin", "Debug", "*Tests.dll")).map do |n| File.expand_path n end
   runner.files = files 
 end
