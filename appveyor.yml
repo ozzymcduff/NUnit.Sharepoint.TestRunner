@@ -2,8 +2,10 @@ version: 1.0.{build}
 install:
   - choco install ruby
   - gem install bundler
-build: off
-test_script:
   - bundle install
   - rake restore
-  - rake test
+  - rake build
+build: off
+test:
+  assemblies:
+    - '**\*.Tests.dll'
