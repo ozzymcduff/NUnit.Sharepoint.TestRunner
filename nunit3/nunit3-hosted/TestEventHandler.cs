@@ -40,12 +40,12 @@ namespace NUnit.Hosted
         private readonly TextWriter _outWriter;
         private readonly TestMessageSubscriberAdapter _messageSubscribeAdapter;
 
-        public TestEventHandler(TextWriter outWriter, string displayLabels, Messages.ISubscriber[] subscribers)
+        public TestEventHandler(TextWriter outWriter, string displayLabels, Messages.OnMessage[] subscribers)
         {
             _displayLabels = displayLabels;
             _outWriter = outWriter;
             _messageSubscribeAdapter = subscribers != null
-                ? new TestMessageSubscriberAdapter(new Messages.CombineSubscribers(subscribers))
+                ? new TestMessageSubscriberAdapter(new Messages.CombineSubscribers(subscribers).OnMessage)
                 : null;
         }
 

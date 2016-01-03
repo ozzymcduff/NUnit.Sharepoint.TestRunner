@@ -46,7 +46,7 @@ namespace NUnit.Hosted
             _filterService = _engine.Services.GetService<ITestFilterService>();
         }
 
-        private TestResults RunTests(TestPackage package, TestFilter filter, Messages.ISubscriber[] messageSubscribers)
+        private TestResults RunTests(TestPackage package, TestFilter filter, Messages.OnMessage[] messageSubscribers)
         {
             XmlNode result;
 
@@ -118,7 +118,7 @@ namespace NUnit.Hosted
             return new StreamWriter(output);
         }
 
-        public TestResults Execute(Messages.ISubscriber[] messageSubscribers)
+        public TestResults Execute(Messages.OnMessage[] messageSubscribers)
         {
             var package = MakeTestPackage(this._options);
             TestFilter filter = CreateTestFilter(_options);
@@ -140,7 +140,7 @@ namespace NUnit.Hosted
             return package;
         }
 
-        public static TestResults Run(HostedOptions options, Messages.ISubscriber[] messageSubscribers)
+        public static TestResults Run(HostedOptions options, Messages.OnMessage[] messageSubscribers)
         {
             using (ITestEngine engine = TestEngineActivator.CreateInstance())
             {

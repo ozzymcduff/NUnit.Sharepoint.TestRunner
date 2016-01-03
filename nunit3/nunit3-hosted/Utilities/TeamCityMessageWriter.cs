@@ -4,17 +4,17 @@ using System.IO;
 
 namespace NUnit.Hosted.Utilities
 {
-    public class TeamCityMessageWriter:Messages.ISubscriber
+    public class TeamCityMessageWriter
     {
-        private Messages.ISubscriber subscriber;
+        private Messages.OnMessage _onMessage;
         public TeamCityMessageWriter(TextWriter outWriter)
         {
-            subscriber = new Messages.HandleAllSubscriber(new HandleAll(outWriter));
+            _onMessage = new Messages.HandleAllSubscriber(new HandleAll(outWriter)).OnMessage;
         }
 
         public void OnMessage(IMessage message)
         {
-            subscriber.OnMessage(message);
+            _onMessage.Invoke(message);
         }
 
         private class HandleAll : Messages.IHandleAll

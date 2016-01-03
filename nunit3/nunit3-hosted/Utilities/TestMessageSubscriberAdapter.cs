@@ -32,14 +32,14 @@ namespace NUnit.Hosted.Utilities
 {
     class TestMessageSubscriberAdapter
     {
-        private readonly Messages.ISubscriber sink;
+        private readonly Messages.OnMessage _onMessage;
         private readonly Dictionary<string, string> _refs = new Dictionary<string, string>();
         private int _blockCounter;
         private string _rootFlowId;
 
-        public TestMessageSubscriberAdapter(Messages.ISubscriber sink)
+        public TestMessageSubscriberAdapter(Messages.OnMessage sink)
         {
-            this.sink = sink;
+            this._onMessage = sink;
         }
 
         public void RegisterMessage(XmlNode message)
@@ -162,7 +162,7 @@ namespace NUnit.Hosted.Utilities
                         switch (result.ToLowerInvariant())
                         {
                             case "passed":
-                                sink.OnMessage(new Messages.OnTestSuccess(testFlowId, ParseTestResult(message), fullName));
+                                _onMessage.Invoke(new Messages.OnTestSuccess(testFlowId, ParseTestResult(message), fullName));
                                 break;
 
                             case "inconclusive":
@@ -220,28 +220,28 @@ namespace NUnit.Hosted.Utilities
         private void OnRootSuiteStart(string flowId, string assemblyName)
         {
             assemblyName = Path.GetFileName(assemblyName);
-            sink.OnMessage(new Messages.OnRootSuiteStart(flowId, assemblyName));
+            _onMessage.Invoke(new Messages.OnRootSuiteStart(flowId, assemblyName));
         }
 
         private void OnRootSuiteFinish(string flowId, string assemblyName)
         {
             assemblyName = Path.GetFileName(assemblyName);
-            sink.OnMessage(new Messages.OnRootSuiteFinish(flowId, assemblyName));
+            _onMessage.Invoke(new Messages.OnRootSuiteFinish(flowId, assemblyName));
         }
 
         private void OnFlowStarted(string flowId, string parentFlowId)
         {
-            sink.OnMessage(new Messages.OnFlowStarted(flowId, parentFlowId));
+            _onMessage.Invoke(new Messages.OnFlowStarted(flowId, parentFlowId));
         }
 
         private void OnFlowFinished(string flowId)
         {
-            sink.OnMessage(new Messages.OnFlowFinished(flowId));
+            _onMessage.Invoke(new Messages.OnFlowFinished(flowId));
         }
 
         private void OnTestStart(string flowId, string fullName)
         {
-            sink.OnMessage(new Messages.OnTestStart(flowId, fullName));
+            _onMessage.Invoke(new Messages.OnTestStart(flowId, fullName));
         }
 
         private TestResult ParseTestResult(XmlNode message)
@@ -273,7 +273,7 @@ namespace NUnit.Hosted.Utilities
                 throw new ArgumentNullException("message");
             }
 
-            sink.OnMessage(new Messages.OnTestSuccess(flowId, ParseTestResult(message), fullName));
+            _onMessage.Invoke(new Messages.OnTestSuccess(flowId, ParseTestResult(message), fullName));
         }
 
         private void OnTestFailed(string flowId, XmlNode message, string fullName)
@@ -288,7 +288,7 @@ namespace NUnit.Hosted.Utilities
             var stackTrace = message.SelectSingleNode("failure/stack-trace");
             msg.Failure.StackTrace = stackTrace.InnerText;
 
-            sink.OnMessage(new Messages.OnTestFailed(flowId, msg, fullName));
+            _onMessage.Invoke(new Messages.OnTestFailed(flowId, msg, fullName));
             //sink.OnTestFinished(flowId, msg, fullName);
         }
 
@@ -302,7 +302,7 @@ namespace NUnit.Hosted.Utilities
             var msg = new TestResult();
             var reason = message.SelectSingleNode("reason/message");
             msg.Reason.Message = reason.InnerText;
-            sink.OnMessage(new Messages.OnTestSkipped(flowId, msg, fullName));
+            _onMessage.Invoke(new Messages.OnTestSkipped(flowId, msg, fullName));
         }
 
         private void OnTestInconclusive(string flowId, XmlNode message, string fullName)
@@ -313,7 +313,7 @@ namespace NUnit.Hosted.Utilities
             }
 
             var msg = new TestResult();
-            sink.OnMessage(new Messages.OnTestInconclusive(flowId, msg, fullName));
+            _onMessage.Invoke(new Messages.OnTestInconclusive(flowId, msg, fullName));
         }
 
     }

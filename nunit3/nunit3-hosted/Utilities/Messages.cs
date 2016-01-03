@@ -4,10 +4,7 @@ namespace NUnit.Hosted.Utilities
 {
     public class Messages
     {
-        public interface ISubscriber
-        {
-            void OnMessage(IMessage message);
-        }
+        public delegate void OnMessage(IMessage message);
 
         public enum Type
         {
@@ -35,10 +32,10 @@ namespace NUnit.Hosted.Utilities
             void OnTestInconclusive(string flowId, TestResult msg, string fullName);
         }
 
-        public class CombineSubscribers : ISubscriber
+        public class CombineSubscribers 
         {
-            private ISubscriber[] subscribers;
-            public CombineSubscribers(ISubscriber[] subscribers)
+            private OnMessage[] subscribers;
+            public CombineSubscribers(OnMessage[] subscribers)
             {
                 this.subscribers = subscribers;
             }
@@ -47,12 +44,12 @@ namespace NUnit.Hosted.Utilities
             {
                 foreach (var subscriber in subscribers)
                 {
-                    subscriber.OnMessage(message);
+                    subscriber.Invoke(message);
                 }
             }
         }
 
-        public class HandleAllSubscriber : ISubscriber
+        public class HandleAllSubscriber 
         {
             private readonly IHandleAll handler;
             public HandleAllSubscriber(IHandleAll handleAllMessages)

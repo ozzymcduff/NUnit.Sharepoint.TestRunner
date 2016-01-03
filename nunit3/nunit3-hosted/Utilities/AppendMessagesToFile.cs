@@ -3,7 +3,7 @@ using System.IO;
 
 namespace NUnit.Hosted.Utilities
 {
-    public class AppendMessagesToFile : Messages.ISubscriber
+    public class AppendMessagesToFile 
     {
         private JsonConvertMessages jsonConvert;
         private readonly string fileName;

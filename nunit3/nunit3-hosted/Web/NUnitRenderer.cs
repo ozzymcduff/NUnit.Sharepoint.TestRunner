@@ -9,7 +9,7 @@ namespace NUnit.Hosted.AspNet
     /// <summary>
     /// 
     /// </summary>
-    public class NUnitRenderer : Messages.ISubscriber
+    public class NUnitRenderer 
     {
         private readonly IHttpContext context;
         private TextWriter _out;

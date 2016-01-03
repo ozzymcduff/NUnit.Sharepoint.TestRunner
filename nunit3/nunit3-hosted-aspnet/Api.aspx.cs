@@ -26,9 +26,9 @@ namespace NUnit.Hosted.AspNet
                 {
                     InputFiles = Path.Combine(Path.Combine(context.Request.MapPath("/"), "bin"), "TestsInWebContext.dll"),
                     WorkDirectory = this.GetType().Assembly.Location,
-                }, new Messages.ISubscriber[] {
-                    new TeamCityMessageWriter(tc_writer),
-                    new NUnitRenderer(context, renderer_writer),
+                }, new Messages.OnMessage[] {
+                    new TeamCityMessageWriter(tc_writer).OnMessage,
+                    new NUnitRenderer(context, renderer_writer).OnMessage,
                     //new AppendMessagesToFile("C:\\src\\messages.json")
                 });
                 tc_writer.Flush();
