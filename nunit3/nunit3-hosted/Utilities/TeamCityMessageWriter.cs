@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
-
+using System.Linq;
 namespace NUnit.Hosted.Utilities
 {
     public class TeamCityMessageWriter
@@ -9,7 +11,9 @@ namespace NUnit.Hosted.Utilities
         private Messages.OnMessage _onMessage;
         public TeamCityMessageWriter(TextWriter outWriter)
         {
-            _onMessage = new Messages.HandleAllSubscriber(new HandleAll(outWriter)).OnMessage;
+            _onMessage = Messages.HandleAllSubscriber(
+                new HandleAll(outWriter)
+            );
         }
 
         public void OnMessage(IMessage message)
@@ -30,6 +34,28 @@ namespace NUnit.Hosted.Utilities
 
                 _outWriter = outWriter;
             }
+            private void TcWriteLine(string name, IEnumerable<string> listOfPairs)
+            {
+                var a = listOfPairs.ToArray();
+                var keyValuePairs = new List<KeyValuePair<string, string>>(a.Length / 2);
+                for (int i = 0; i < a.Length; i += 2)
+                {
+                    keyValuePairs.Add(new KeyValuePair<string, string>(a[i], a[i + 1]));
+                }
+                TcWriteLine(name, keyValuePairs);
+            }
+
+            private void TcWriteLine(string name, IEnumerable<KeyValuePair<string, string>> keyValuePairs)
+            {
+                _outWriter.WriteLine("##teamcity[{0} {1}]", name, string.Join(" ", keyValuePairs
+                    .Where(NotEmpyFlowId)
+                    .Select(kv => kv.Key + "='" + Escape(kv.Value) + "'")));
+            }
+
+            private bool NotEmpyFlowId(KeyValuePair<string, string> arg)
+            {
+                return !(arg.Key.Equals("flowId") && string.IsNullOrEmpty(arg.Value));
+            }
 
             private void TrySendOutput(string flowId, TestResult message, string fullName)
             {
@@ -41,35 +67,34 @@ namespace NUnit.Hosted.Utilities
                 {
                     return;
                 }
-
-                WriteLine("##teamcity[testStdOut name='{0}' out='{1}' flowId='{2}']", fullName, message.Output, flowId);
+                TcWriteLine("testStdOut", new[] { "name", fullName, "out", message.Output, "flowId", flowId });
             }
 
             public void OnRootSuiteStart(string flowId, string assemblyName)
             {
                 assemblyName = Path.GetFileName(assemblyName);
-                WriteLine("##teamcity[testSuiteStarted name='{0}' flowId='{1}']", assemblyName, flowId);
+                TcWriteLine("testSuiteStarted", new[] { "name", assemblyName, "flowId", flowId });
             }
 
             public void OnRootSuiteFinish(string flowId, string assemblyName)
             {
                 assemblyName = Path.GetFileName(assemblyName);
-                WriteLine("##teamcity[testSuiteFinished name='{0}' flowId='{1}']", assemblyName, flowId);
+                TcWriteLine("testSuiteFinished", new[] { "name", assemblyName, "flowId", flowId });
             }
 
             public void OnFlowStarted(string flowId, string parentFlowId)
             {
-                WriteLine("##teamcity[flowStarted flowId='{0}' parent='{1}']", flowId, parentFlowId);
+                TcWriteLine("flowStarted", new[] { "flowId", flowId, "parent", parentFlowId });
             }
 
             public void OnFlowFinished(string flowId)
             {
-                WriteLine("##teamcity[flowFinished flowId='{0}']", flowId);
+                TcWriteLine("flowFinished", new[] { "flowId", flowId });
             }
 
             public void OnTestStart(string flowId, string fullName)
             {
-                WriteLine("##teamcity[testStarted name='{0}' captureStandardOutput='false' flowId='{1}']", fullName, flowId);
+                TcWriteLine("testStarted", new[] { "name", fullName, "captureStandardOutput", "false", "flowId", flowId });
             }
 
             public void OnTestFinishedSuccessFully(string flowId, TestResult message, string fullName)
@@ -82,11 +107,7 @@ namespace NUnit.Hosted.Utilities
                 var durationMilliseconds = message.DurationMilliseconds;
 
                 TrySendOutput(flowId, message, fullName);
-                WriteLine(
-                    "##teamcity[testFinished name='{0}' duration='{1}' flowId='{2}']",
-                    fullName,
-                    durationMilliseconds.ToString(),
-                    flowId);
+                TcWriteLine("testFinished", new[] { "name", fullName, "duration", durationMilliseconds.ToString(), "flowId", flowId });
             }
 
             public void OnTestFailed(string flowId, TestResult message, string fullName)
@@ -98,21 +119,14 @@ namespace NUnit.Hosted.Utilities
 
                 var errorMmessage = message.Failure.Message;
                 var stackTrace = message.Failure.StackTrace;
-                WriteLine(
-                    "##teamcity[testFailed name='{0}' message='{1}' details='{2}' flowId='{3}']",
-                    fullName,
-                    errorMmessage == null ? string.Empty : errorMmessage,
-                    stackTrace == null ? string.Empty : stackTrace,
-                    flowId);
-
+                TcWriteLine("testFailed", new[] { "name", fullName,
+                    "message", errorMmessage == null ? string.Empty : errorMmessage,
+                    "details", stackTrace == null ? string.Empty : stackTrace,
+                    "flowId", flowId });
                 var durationMilliseconds = message.DurationMilliseconds;
 
                 TrySendOutput(flowId, message, fullName);
-                WriteLine(
-                    "##teamcity[testFinished name='{0}' duration='{1}' flowId='{2}']",
-                    fullName,
-                    durationMilliseconds.ToString(),
-                    flowId);
+                TcWriteLine("testFinished", new[] { "name", fullName, "duration", durationMilliseconds.ToString(), "flowId", flowId });
             }
 
             public void OnTestSkipped(string flowId, TestResult message, string fullName)
@@ -124,11 +138,7 @@ namespace NUnit.Hosted.Utilities
 
                 TrySendOutput(flowId, message, fullName);
                 var reason = message.Reason.Message;
-                WriteLine(
-                    "##teamcity[testIgnored name='{0}' message='{1}' flowId='{2}']",
-                    fullName,
-                    reason == null ? string.Empty : reason,
-                    flowId);
+                TcWriteLine("testFinished", new[] { "name", fullName, "message", reason == null ? string.Empty : reason, "flowId", flowId });
             }
 
             public void OnTestInconclusive(string flowId, TestResult message, string fullName)
@@ -139,11 +149,7 @@ namespace NUnit.Hosted.Utilities
                 }
 
                 TrySendOutput(flowId, message, fullName);
-                WriteLine(
-                    "##teamcity[testIgnored name='{0}' message='{1}' flowId='{2}']",
-                    fullName,
-                    "Inconclusive",
-                    flowId);
+                TcWriteLine("testIgnored", new[] { "name", fullName, "message", "Inconclusive", "flowId", flowId });
             }
 
             private void WriteLine(string format, params string[] arg)
@@ -189,6 +195,5 @@ namespace NUnit.Hosted.Utilities
                     : null;
             }
         }
-
     }
 }

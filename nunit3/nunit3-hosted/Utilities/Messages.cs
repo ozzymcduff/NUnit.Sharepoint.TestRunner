@@ -6,6 +6,9 @@ namespace NUnit.Hosted.Utilities
     {
         public delegate void OnMessage(IMessage message);
 
+        /// <summary>
+        /// In order to identify the type of the message in the switch statement
+        /// </summary>
         public enum Type
         {
             OnTestStart,
@@ -19,6 +22,9 @@ namespace NUnit.Hosted.Utilities
             OnTestInconclusive
         }
 
+        /// <summary>
+        /// similar to a 'switch' on all message types 
+        /// </summary>
         public interface IHandleAll
         {
             void OnTestStart(string flowId, string fullName);
@@ -32,31 +38,20 @@ namespace NUnit.Hosted.Utilities
             void OnTestInconclusive(string flowId, TestResult msg, string fullName);
         }
 
-        public class CombineSubscribers 
+        public static OnMessage CombineSubscribers(OnMessage[] subscribers)
         {
-            private OnMessage[] subscribers;
-            public CombineSubscribers(OnMessage[] subscribers)
-            {
-                this.subscribers = subscribers;
-            }
-
-            public void OnMessage(IMessage message)
+            return (IMessage message) =>
             {
                 foreach (var subscriber in subscribers)
                 {
                     subscriber.Invoke(message);
                 }
-            }
+            };
         }
 
-        public class HandleAllSubscriber 
+        public static OnMessage HandleAllSubscriber(IHandleAll handler)
         {
-            private readonly IHandleAll handler;
-            public HandleAllSubscriber(IHandleAll handleAllMessages)
-            {
-                handler = handleAllMessages;
-            }
-            public void OnMessage(IMessage message)
+            return (IMessage message) =>
             {
                 switch (message.Type)
                 {
@@ -117,7 +112,7 @@ namespace NUnit.Hosted.Utilities
                     default:
                         throw new Exception("Unknown message type " + message.Type);
                 }
-            }
+            };
         }
 
         public class OnTestStart : IMessage

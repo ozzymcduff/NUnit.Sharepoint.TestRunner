@@ -3,6 +3,8 @@ using NUnit.Hosted.Utilities;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using With;
+using System.Linq;
 
 namespace NUnit.Hosted.AspNet.Tests
 {
@@ -63,7 +65,23 @@ namespace NUnit.Hosted.AspNet.Tests
 
         private IEnumerable<IMessage> WithoutFlow(IEnumerable<IMessage> enumerable)
         {
-            throw new NotImplementedException();
+            var onFlow = new List<Messages.Type>(new[] {
+                Messages.Type.OnFlowStarted, Messages.Type.OnFlowFinished
+            });
+
+            return enumerable
+                .Where(e => !onFlow.Contains(e.Type))
+                .Select(e =>
+                        Switch.On<IMessage, IMessage>(e)
+                        .Case((Messages.OnRootSuiteFinish m) => m.With(m1 => m1.FlowId, ""))
+                        .Case((Messages.OnRootSuiteStart m) => m.With(m1 => m1.FlowId, ""))
+                        .Case((Messages.OnTestFailed m) => m.With(m1 => m1.FlowId, ""))
+                        .Case((Messages.OnTestInconclusive m) => m.With(m1 => m1.FlowId, ""))
+                        .Case((Messages.OnTestSkipped m) => m.With(m1 => m1.FlowId, ""))
+                        .Case((Messages.OnTestSuccess m) => m.With(m1 => m1.FlowId, ""))
+                        .Case((Messages.OnTestStart m) => m.With(m1 => m1.FlowId, ""))
+                        .Value())
+                        ;
         }
     }
 }

@@ -45,7 +45,7 @@ namespace NUnit.Hosted
             _displayLabels = displayLabels;
             _outWriter = outWriter;
             _messageSubscribeAdapter = subscribers != null
-                ? new TestMessageSubscriberAdapter(new Messages.CombineSubscribers(subscribers).OnMessage)
+                ? new TestMessageSubscriberAdapter(Messages.CombineSubscribers(subscribers))
                 : null;
         }
 
