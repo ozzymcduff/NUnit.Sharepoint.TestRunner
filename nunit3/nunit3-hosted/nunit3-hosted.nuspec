@@ -10,8 +10,15 @@
         <projectUrl>https://github.com/wallymathieu/NUnit.Sharepoint.TestRunner</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>$description$</description>
-        <releaseNotes>Initial release.</releaseNotes>
+        <releaseNotes>Missing dependencies.</releaseNotes>
         <copyright>Copyright 2015</copyright>
         <tags>nunit test testing tdd runner sharepoint</tags>
+        <dependencies>
+            <dependency id="Newtonsoft.Json" version="7.0.1" />
+            <dependency id="NUnit" version="3.0.1" />
+            <dependency id="NUnit.Console" version="3.0.1" />
+            <dependency id="NUnit.Engine" version="3.0.1" />
+            <dependency id="NUnit.Runners" version="3.0.1" />
+        </dependencies>
     </metadata>
 </package>
