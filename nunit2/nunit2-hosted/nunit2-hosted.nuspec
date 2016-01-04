@@ -10,7 +10,7 @@
         <projectUrl>https://github.com/wallymathieu/NUnit.Sharepoint.TestRunner</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>$description$</description>
-        <releaseNotes>Initial release.</releaseNotes>
+        <releaseNotes>Fixed rendering of teamcity messages.</releaseNotes>
         <copyright>Copyright 2015</copyright>
         <tags>nunit test testing tdd runner sharepoint</tags>
     </metadata>
