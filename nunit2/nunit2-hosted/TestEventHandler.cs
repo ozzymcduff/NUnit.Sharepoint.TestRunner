@@ -40,7 +40,7 @@ namespace NUnit.Hosted
         private ResultSummary s;
         private readonly TestMessageSubscriberAdapter _messageSubscribeAdapter;
 
-        public TestEventHandler(HostedOptions options, TextWriter outWriter, Messages.ISubscriber[] subscribers)
+        public TestEventHandler(HostedOptions options, TextWriter outWriter, Messages.OnMessage[] subscribers)
         {
             this.level = 0;
             this.s = new ResultSummary();
@@ -48,7 +48,7 @@ namespace NUnit.Hosted
             this.outWriter = outWriter;
             this.currentTestName = string.Empty;
             this._messageSubscribeAdapter = subscribers != null
-                ? new TestMessageSubscriberAdapter(new Messages.CombineSubscribers(subscribers))
+                ? new TestMessageSubscriberAdapter(Messages.CombineSubscribers(subscribers))
                 : null;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(this.OnUnhandledException);
         }

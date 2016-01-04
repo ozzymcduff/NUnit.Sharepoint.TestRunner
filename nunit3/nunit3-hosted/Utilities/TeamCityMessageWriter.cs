@@ -49,7 +49,8 @@ namespace NUnit.Hosted.Utilities
             {
                 _outWriter.WriteLine("##teamcity[{0} {1}]", name, string.Join(" ", keyValuePairs
                     .Where(NotEmpyFlowId)
-                    .Select(kv => kv.Key + "='" + Escape(kv.Value) + "'")));
+                    .Select(kv => kv.Key + "='" + Escape(kv.Value) + "'")
+                    .ToArray()));
             }
 
             private bool NotEmpyFlowId(KeyValuePair<string, string> arg)

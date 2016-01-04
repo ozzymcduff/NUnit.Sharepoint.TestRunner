@@ -41,7 +41,7 @@ namespace NUnit.Hosted
             _options = options;
         }
 
-        private TestResults RunTests(TestPackage package, TestFilter filter, Messages.ISubscriber[] subscribers)
+        private TestResults RunTests(TestPackage package, TestFilter filter, Messages.OnMessage[] subscribers)
         {
             NUnit.Core.TestResult result;
             ProcessModel processModel = package.Settings.Contains("ProcessModel") ? (ProcessModel)package.Settings["ProcessModel"] : ProcessModel.Default;
@@ -113,7 +113,7 @@ namespace NUnit.Hosted
             return new StreamWriter(output);
         }
 
-        public TestResults Execute(Messages.ISubscriber[] subscribers)
+        public TestResults Execute(Messages.OnMessage[] subscribers)
         {
             var package = MakeTestPackage(this._options);
             TestFilter testFilter;
@@ -167,7 +167,7 @@ namespace NUnit.Hosted
             return testPackage;
         }
         private static bool init = false;
-        public static TestResults Run(HostedOptions options, Messages.ISubscriber[] subscribers)
+        public static TestResults Run(HostedOptions options, Messages.OnMessage[] subscribers)
         {
             if (!init)
             {
